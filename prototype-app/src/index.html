@@ -25,7 +25,7 @@
           <span><strong>SDLC Control Room</strong><small>Agentic delivery prototype</small></span>
         </a>
         <div class="topbarMeta">
-          <span class="simulationTag">Autonomous end-to-end run</span>
+          <span class="simulationTag">Deterministic simulation</span>
           <a class="githubLink" href="https://github.com/SagarJana-source/SDLC_project" target="_blank" rel="noreferrer">View repository ↗</a>
         </div>
       </header>
@@ -56,7 +56,7 @@
           <span>Lineage coverage</span><strong><span id="lineage-percent">0</span><small>%</small></strong><small id="lineage-note">in progress</small>
         </article>
         <article class="metricCard accentMetric">
-          <span>Approval policy</span><strong id="gate-count">AUTO</strong><small>no approval wait</small>
+          <span>Human gates</span><strong id="gate-count">0/1</strong><small>architect decision enforced</small>
         </article>
       </section>
 
@@ -70,19 +70,19 @@
           <textarea id="requirement">When the framework generates a BRD, notify the designated architect and require approval of that exact version before backlog decomposition begins. Record the decision, reviewer, timestamp, comments, and complete requirement lineage.</textarea>
           <div class="requirementMeta"><span>Requester · Product Operations</span><span>Priority · High</span><span>Scenario · SAF-SCENARIO-001</span></div>
           <div class="actionRow">
-            <button class="primaryButton" id="run-gate">Build full working project <span>→</span></button>
+            <button class="primaryButton" id="run-gate">Run agents to approval gate <span>→</span></button>
             <button class="primaryButton hidden" id="complete-run">Run remaining agents <span>→</span></button>
             <button class="primaryButton hidden" id="reset-demo">Reset demonstration <span>↻</span></button>
             <button class="exampleButton" id="load-navbar-example" type="button">Use navbar example</button>
-            <p class="runNotice" id="run-notice" role="status">Ready to build SAF-REQ-001 as a complete working project.</p>
+            <p class="runNotice" id="run-notice" role="status">Ready to process SAF-REQ-001 through the governed lifecycle.</p>
           </div>
         </article>
 
         <aside class="panel guardrailPanel">
-          <p class="sectionLabel">Execution policy</p><h2>Autonomous mode active</h2>
+          <p class="sectionLabel">Control policy</p><h2>Authority stays human</h2>
           <ul>
-            <li><span>01</span>All 11 agents run without an approval pause.</li>
-            <li><span>02</span>An automatic policy decision preserves traceability.</li>
+            <li><span>01</span>Agents prepare; named people approve.</li>
+            <li><span>02</span>Approval binds to one artifact version.</li>
             <li><span>03</span>Failed checks remain visible and blocking.</li>
           </ul>
           <div class="policyFooter"><span class="shield">✓</span>Production writes disabled</div>
@@ -119,7 +119,6 @@
         <div class="sectionHeader">
           <div><p class="sectionLabel">Generated solution</p><h2>Code, preview, and downloadable report</h2></div>
           <div class="solutionActions">
-            <button class="downloadButton" id="download-zip" type="button">Download project ZIP</button>
             <button class="downloadButton" id="download-code" type="button">Download all code</button>
             <button class="downloadButton secondary" id="download-doc" type="button">Download Word report</button>
           </div>
