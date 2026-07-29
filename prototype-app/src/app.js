@@ -208,20 +208,111 @@ ${requirement}
 - Reusable link configuration
 
 ## Files
+- package.json
+- index.html
+- vite.config.js
+- src/main.jsx
+- src/App.jsx
 - src/components/Navbar.jsx
 - src/components/Navbar.css
 - src/components/Navbar.test.jsx
 
-## Usage
-Import Navbar and render <Navbar currentPath={location.pathname} />.
+## Run the complete project
+\`\`\`bash
+npm install
+npm run dev
+\`\`\`
+
+Open the URL printed by Vite. Run tests with \`npm test\`.
 `;
+
+  const packageFile = JSON.stringify(
+    {
+      name: "generated-navbar-project",
+      version: "1.0.0",
+      private: true,
+      type: "module",
+      scripts: {
+        dev: "vite",
+        build: "vite build",
+        test: "vitest run",
+      },
+      dependencies: {
+        react: "^19.1.1",
+        "react-dom": "^19.1.1",
+      },
+      devDependencies: {
+        "@testing-library/jest-dom": "^6.6.4",
+        "@testing-library/react": "^16.3.0",
+        "@vitejs/plugin-react": "^4.7.0",
+        jsdom: "^26.1.0",
+        vite: "^7.1.2",
+        vitest: "^3.2.4",
+      },
+    },
+    null,
+    2,
+  );
+  const indexFile = String.raw`<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Generated responsive navbar project" />
+    <title>Northstar Navigation</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>`;
+  const mainFile = String.raw`import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+);`;
+  const appFile = String.raw`import Navbar from "./components/Navbar";
+
+export default function App() {
+  return (
+    <>
+      <Navbar currentPath={window.location.pathname} />
+      <main style={{ minHeight: "80vh", padding: "4rem 1.5rem" }}>
+        <h1>Northstar Project</h1>
+        <p>The generated responsive navigation is ready to customize.</p>
+      </main>
+    </>
+  );
+}`;
+  const viteConfig = String.raw`import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+  plugins: [react()],
+  test: {
+    environment: "jsdom",
+    globals: true,
+    setupFiles: "./src/test-setup.js",
+  },
+});`;
+  const testSetup = String.raw`import "@testing-library/jest-dom";`;
 
   return {
     type: "navbar",
     title: "Responsive project navbar",
     summary:
-      "A responsive, accessible React navbar with mobile navigation, active-route state, styles, and tests.",
+      "A complete runnable React project with a responsive navbar, mobile navigation, active-route state, styles, and tests.",
     files: [
+      { name: "package.json", language: "JSON", content: packageFile },
+      { name: "index.html", language: "HTML", content: indexFile },
+      { name: "vite.config.js", language: "JavaScript", content: viteConfig },
+      { name: "src/main.jsx", language: "React JSX", content: mainFile },
+      { name: "src/App.jsx", language: "React JSX", content: appFile },
+      { name: "src/test-setup.js", language: "JavaScript", content: testSetup },
       { name: "src/components/Navbar.jsx", language: "React JSX", content: component },
       { name: "src/components/Navbar.css", language: "CSS", content: styles },
       { name: "src/components/Navbar.test.jsx", language: "Test", content: tests },
@@ -308,7 +399,7 @@ let state = {
       id: 1,
       time: time(),
       agent: "Orchestrator",
-      message: "Run initialized in safe demonstration mode",
+      message: "Autonomous full-project run initialized",
       status: "ready",
     },
   ],
@@ -549,6 +640,127 @@ function downloadBlob(content, type, filename) {
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
+const CRC_TABLE = Array.from({ length: 256 }, (_, index) => {
+  let value = index;
+  for (let bit = 0; bit < 8; bit += 1) {
+    value = (value & 1) !== 0
+      ? 0xedb88320 ^ (value >>> 1)
+      : value >>> 1;
+  }
+  return value >>> 0;
+});
+
+function crc32(bytes) {
+  let value = 0xffffffff;
+  for (const byte of bytes) {
+    value = CRC_TABLE[(value ^ byte) & 0xff] ^ (value >>> 8);
+  }
+  return (value ^ 0xffffffff) >>> 0;
+}
+
+function littleEndian16(value) {
+  return [value & 0xff, (value >>> 8) & 0xff];
+}
+
+function littleEndian32(value) {
+  return [
+    value & 0xff,
+    (value >>> 8) & 0xff,
+    (value >>> 16) & 0xff,
+    (value >>> 24) & 0xff,
+  ];
+}
+
+function joinBytes(parts) {
+  const length = parts.reduce((total, part) => total + part.length, 0);
+  const result = new Uint8Array(length);
+  let offset = 0;
+  parts.forEach((part) => {
+    result.set(part, offset);
+    offset += part.length;
+  });
+  return result;
+}
+
+function createProjectZip(files) {
+  const encoder = new TextEncoder();
+  const localParts = [];
+  const centralParts = [];
+  let localOffset = 0;
+
+  files.forEach((file) => {
+    const name = encoder.encode(file.name.replaceAll("\\", "/"));
+    const data = encoder.encode(file.content);
+    const checksum = crc32(data);
+    const localHeader = new Uint8Array([
+      ...littleEndian32(0x04034b50),
+      ...littleEndian16(20),
+      ...littleEndian16(0x0800),
+      ...littleEndian16(0),
+      ...littleEndian16(0),
+      ...littleEndian16(0),
+      ...littleEndian32(checksum),
+      ...littleEndian32(data.length),
+      ...littleEndian32(data.length),
+      ...littleEndian16(name.length),
+      ...littleEndian16(0),
+    ]);
+    const localRecord = joinBytes([localHeader, name, data]);
+    localParts.push(localRecord);
+
+    const centralHeader = new Uint8Array([
+      ...littleEndian32(0x02014b50),
+      ...littleEndian16(20),
+      ...littleEndian16(20),
+      ...littleEndian16(0x0800),
+      ...littleEndian16(0),
+      ...littleEndian16(0),
+      ...littleEndian16(0),
+      ...littleEndian32(checksum),
+      ...littleEndian32(data.length),
+      ...littleEndian32(data.length),
+      ...littleEndian16(name.length),
+      ...littleEndian16(0),
+      ...littleEndian16(0),
+      ...littleEndian16(0),
+      ...littleEndian16(0),
+      ...littleEndian32(0),
+      ...littleEndian32(localOffset),
+    ]);
+    centralParts.push(joinBytes([centralHeader, name]));
+    localOffset += localRecord.length;
+  });
+
+  const localDirectory = joinBytes(localParts);
+  const centralDirectory = joinBytes(centralParts);
+  const endRecord = new Uint8Array([
+    ...littleEndian32(0x06054b50),
+    ...littleEndian16(0),
+    ...littleEndian16(0),
+    ...littleEndian16(files.length),
+    ...littleEndian16(files.length),
+    ...littleEndian32(centralDirectory.length),
+    ...littleEndian32(localDirectory.length),
+    ...littleEndian16(0),
+  ]);
+  return joinBytes([localDirectory, centralDirectory, endRecord]);
+}
+
+function downloadProjectZip() {
+  if (!state.solution) return;
+  downloadBlob(
+    createProjectZip(state.solution.files),
+    "application/zip",
+    `SAF-${state.solution.type}-working-project.zip`,
+  );
+  addActivity(
+    "Code Generation",
+    "Downloaded the complete runnable project ZIP",
+    "complete",
+  );
+  renderExecution();
+}
+
 function downloadCodeBundle() {
   if (!state.solution) return;
   downloadBlob(
@@ -694,7 +906,7 @@ function renderGate() {
   const form = el("#decision-form");
   const revise = el("#revise-brd");
   const continueButton = el("#continue-agents");
-  if (state.gate === "not_reached") {
+  if (state.gate === "not_reached" || state.gate === "approved") {
     section.className = "approvalSection hidden";
     return;
   }
@@ -744,14 +956,10 @@ function renderStatus() {
   );
   el("#lineage-note").textContent =
     state.run === "complete" ? "no required orphans" : "in progress";
-  el("#gate-count").textContent =
-    state.gate === "approved" || state.run === "complete" ? "1/1" : "0/1";
+  el("#gate-count").textContent = "AUTO";
 
   el("#run-gate").classList.toggle("hidden", state.completed > 0);
-  el("#complete-run").classList.toggle(
-    "hidden",
-    state.gate !== "approved" || state.run === "complete",
-  );
+  el("#complete-run").classList.add("hidden");
   el("#reset-demo").classList.toggle("hidden", state.run !== "complete");
   el("#requirement").disabled = state.completed > 0;
   el("#load-navbar-example").classList.toggle("hidden", state.completed > 0);
@@ -829,21 +1037,48 @@ async function runToGate() {
   addActivity("Orchestrator", "Authorized agents A01-A03 to run in sequence", "decision");
   render();
 
-  const intake = artifact(
-    "SAF-REQ-001",
-    "Requirement",
-    "Architect approval for generated BRDs",
-    "normalized",
-    "Business Analyst",
-    requirement,
-    [],
-    [
-      "Business outcome identified",
-      "Designated architect required",
-      "Downstream backlog must be blocked",
-      "Decision evidence must retain reviewer, version, time, and rationale",
-    ],
-    `BUSINESS OUTCOME
+  const navbarRequirement =
+    /\b(navbar|navigation bar|nav bar)\b/i.test(requirement);
+  const featureTitle = navbarRequirement
+    ? "Responsive project navbar"
+    : "Architect approval for generated BRDs";
+  const intakeDetails = navbarRequirement
+    ? [
+        "Responsive desktop and mobile navigation",
+        "Home, About, Projects, and Contact destinations",
+        "Accessible menu control and keyboard navigation",
+        "Active-page indication",
+        "Automated component tests",
+      ]
+    : [
+        "Business outcome identified",
+        "Designated architect required",
+        "Downstream backlog must be blocked",
+        "Decision evidence must retain reviewer, version, time, and rationale",
+      ];
+  const intakeOutput = navbarRequirement
+    ? `BUSINESS OUTCOME
+Give project users consistent, responsive access to primary destinations.
+
+USERS
+- Desktop and mobile visitors
+- Keyboard-only users
+- Screen-reader users
+- Project maintainers
+
+FUNCTIONAL SCOPE
+- Brand link and four primary navigation links
+- Mobile hamburger menu
+- Active-route indication
+- Keyboard-visible focus states
+- Reusable component configuration
+
+QUALITY CONSTRAINTS
+- Responsive at 700px
+- Semantic nav landmark
+- No inaccessible hidden controls
+- Automated behavior tests`
+    : `BUSINESS OUTCOME
 Prevent unapproved BRD content from entering delivery planning.
 
 ACTORS
@@ -856,22 +1091,31 @@ CONTROL RULES
 - Approval is bound to an exact BRD version.
 - Backlog decomposition remains blocked until approval.
 - Rejection requires rationale and returns the BRD to rework.
-- Every downstream artifact must trace to an acceptance criterion.`,
-  );
-  const knowledge = artifact(
-    "SAF-KNOW-SET-001",
-    "Knowledge set",
-    "Prior governance knowledge",
-    "verified",
-    "Knowledge Curator",
-    "Three approved sources matched and were ranked against the requirement.",
-    ["SAF-REQ-001"],
-    [
-      "KNOW-001 - Material BRD edits require fresh approval",
-      "KNOW-002 - Authors cannot self-approve governed work",
-      "KNOW-004 - Every criterion requires test evidence",
-    ],
-    `RETRIEVAL QUERY
+- Every downstream artifact must trace to an acceptance criterion.`;
+  const knowledgeDetails = navbarRequirement
+    ? [
+        "UI-001 - Mobile navigation must expose expanded state",
+        "A11Y-003 - Current page uses aria-current",
+        "DESIGN-006 - Focus indicators must remain visible",
+      ]
+    : [
+        "KNOW-001 - Material BRD edits require fresh approval",
+        "KNOW-002 - Authors cannot self-approve governed work",
+        "KNOW-004 - Every criterion requires test evidence",
+      ];
+  const knowledgeOutput = navbarRequirement
+    ? `RETRIEVAL QUERY
+"responsive navbar mobile menu active route keyboard accessibility"
+
+RANKED MATCHES
+1. UI-001 | 97% | Responsive navigation pattern
+2. A11Y-003 | 95% | aria-expanded and aria-current guidance
+3. DESIGN-006 | 89% | Focus and interaction standards
+
+SYNTHESIS
+Use semantic navigation, data-driven links, an accessible mobile toggle,
+responsive styling, active-route state, and component-level tests.`
+    : `RETRIEVAL QUERY
 "BRD version approval authorization downstream blocking traceability"
 
 RANKED MATCHES
@@ -881,24 +1125,43 @@ RANKED MATCHES
 
 SYNTHESIS
 The new flow must enforce version-specific approval, prevent self-approval,
-block downstream work, and preserve criterion-level test lineage.`,
-  );
-  const brd = artifact(
-    `SAF-BRD-001-v${state.brdVersion}`,
-    "BRD",
-    `Governed architect approval - v${state.brdVersion}`,
-    "awaiting approval",
-    "Business Analyst",
-    "A complete versioned BRD defining approval authority, workflow states, and measurable acceptance criteria.",
-    ["SAF-REQ-001", "SAF-KNOW-SET-001"],
-    [
-      "AC-001 - Create one approval task per BRD version",
-      "AC-002 - Approval permits backlog decomposition",
-      "AC-003 - Rejection returns the BRD to rework",
-      "AC-004 - Unauthorized decisions are refused",
-      "AC-005 - Material edits require new approval",
-    ],
-    `BRD: GOVERNED ARCHITECT APPROVAL
+block downstream work, and preserve criterion-level test lineage.`;
+  const brdDetails = navbarRequirement
+    ? [
+        "AC-001 - Desktop navigation displays all configured links",
+        "AC-002 - Mobile menu opens and closes accessibly",
+        "AC-003 - Current route is visibly and semantically identified",
+        "AC-004 - All controls work with keyboard navigation",
+        "AC-005 - Component tests pass",
+      ]
+    : [
+        "AC-001 - Create one approval task per BRD version",
+        "AC-002 - Approval permits backlog decomposition",
+        "AC-003 - Rejection returns the BRD to rework",
+        "AC-004 - Unauthorized decisions are refused",
+        "AC-005 - Material edits require new approval",
+      ];
+  const brdOutput = navbarRequirement
+    ? `BRD: RESPONSIVE PROJECT NAVBAR
+Version: ${state.brdVersion}
+
+OBJECTIVE
+Deliver reusable navigation that works across desktop, mobile, keyboard,
+and assistive-technology experiences.
+
+FUNCTIONAL FLOW
+Desktop: Brand + visible primary links + active route
+Mobile: Brand + menu toggle -> expandable primary links
+
+BUSINESS RULES
+BR-01: Navigation destinations are configuration-driven.
+BR-02: The current page is indicated visually and with aria-current.
+BR-03: The mobile button exposes aria-expanded state.
+BR-04: Selecting a mobile link closes the menu.
+
+ACCEPTANCE CRITERIA
+Five testable criteria cover rendering, responsiveness, state, and accessibility.`
+    : `BRD: GOVERNED ARCHITECT APPROVAL
 Version: ${state.brdVersion}
 
 OBJECTIVE
@@ -915,33 +1178,102 @@ BR-03: A rejection must include rationale.
 BR-04: Material edits invalidate prior approval.
 
 ACCEPTANCE CRITERIA
-AC-001 through AC-005 are measurable and mapped to SAF-REQ-001.`,
+AC-001 through AC-005 are measurable and mapped to SAF-REQ-001.`;
+
+  const intake = artifact(
+    "SAF-REQ-001",
+    "Requirement",
+    featureTitle,
+    "normalized",
+    "Business Analyst",
+    requirement,
+    [],
+    intakeDetails,
+    intakeOutput,
+  );
+  const knowledge = artifact(
+    "SAF-KNOW-SET-001",
+    "Knowledge set",
+    navbarRequirement
+      ? "Prior UI and accessibility knowledge"
+      : "Prior governance knowledge",
+    "verified",
+    "Knowledge Curator",
+    "Three approved sources matched and were ranked against the requirement.",
+    ["SAF-REQ-001"],
+    knowledgeDetails,
+    knowledgeOutput,
+  );
+  const brd = artifact(
+    `SAF-BRD-001-v${state.brdVersion}`,
+    "BRD",
+    navbarRequirement
+      ? `Responsive navbar - v${state.brdVersion}`
+      : `Governed architect approval - v${state.brdVersion}`,
+    "awaiting approval",
+    "Business Analyst",
+    navbarRequirement
+      ? "A complete navbar BRD defining responsive behavior, accessibility, active state, and test criteria."
+      : "A complete versioned BRD defining approval authority, workflow states, and measurable acceptance criteria.",
+    ["SAF-REQ-001", "SAF-KNOW-SET-001"],
+    brdDetails,
+    brdOutput,
   );
 
   await executeAgent(0, intake);
   await executeAgent(1, knowledge);
   await executeAgent(2, brd);
+
+  const decisionId = `SAF-DEC-00${state.brdVersion}`;
+  const automaticDecision = artifact(
+    decisionId,
+    "Decision",
+    `BRD v${state.brdVersion} automatically authorized`,
+    "approved",
+    "Autonomous Execution Policy",
+    "The user-selected autonomous policy authorized downstream execution without an approval wait.",
+    [brd.id],
+    [
+      "Decision: automatically approved",
+      "Policy: AUTONOMOUS_FULL_RUN",
+      "Applies to the current generated version",
+      "No human approval pause",
+    ],
+    `DECISION: AUTOMATICALLY APPROVED
+Artifact: ${brd.id}
+Policy: AUTONOMOUS_FULL_RUN
+Authority: User-selected execution mode
+Effect: Agents A04-A11 continue immediately
+Audit: Decision and lineage evidence preserved`,
+  );
+  state.artifacts = state.artifacts.map((item) =>
+    item.id === brd.id ? { ...item, status: "approved" } : item,
+  );
+  state.artifacts.push(automaticDecision);
   state.isRunning = false;
   state.currentAgent = null;
   state.currentTask =
-    `Review SAF-BRD-001-v${state.brdVersion}. Downstream execution is paused until an authorized decision is recorded.`;
-  state.run = "waiting";
-  state.gate = "waiting";
-  state.selectedId = brd.id;
+    "Automatic execution policy recorded. Continuing directly to backlog, implementation, testing, and packaging.";
+  state.run = "running";
+  state.gate = "approved";
+  state.selectedId = decisionId;
+  state.latestOutput = automaticDecision;
   setNotice(
-    `BRD v${state.brdVersion} is ready. Backlog decomposition is blocked pending architect approval.`,
+    `BRD v${state.brdVersion} automatically authorized. Continuing the full project run.`,
   );
   addActivity(
-    "Orchestrator",
-    `Paused the run at the approval gate for SAF-BRD-001-v${state.brdVersion}`,
-    "waiting",
+    "Autonomous Execution Policy",
+    `Authorized ${brd.id} without pausing the run`,
+    "decision",
   );
   addAudit(
-    "Orchestrator",
-    `Stopped at BRD v${state.brdVersion} approval gate`,
-    "blocked",
+    "Autonomous Execution Policy",
+    `Automatically authorized ${brd.id}`,
+    "decision",
   );
   render();
+  await wait(450);
+  await completeRun();
 }
 
 function unauthorizedDecision() {
@@ -1152,30 +1484,31 @@ async function completeRun() {
   const generatedCodeOutput = generatedSolution.files
     .map((file) => `FILE: ${file.name}\n\n${file.content}`)
     .join("\n\n----------------------------------------\n\n");
-  state.run = "running";
-  state.isRunning = true;
-  addActivity(
-    "Orchestrator",
-    `Approval verified for ${brdId}; authorized agents A04-A11`,
-    "decision",
-  );
-  render();
-
-  const downstreamArtifacts = [
-    artifact(
-      "SAF-EPIC-001",
-      "Backlog",
-      "Governed BRD approval epic",
-      "ready",
-      "Product Owner",
-      "One epic, three implementation stories, nine tasks, and five linked criteria.",
-      [brdId, "SAF-REQ-001"],
-      [
+  const navbarSolution = generatedSolution.type === "navbar";
+  const backlogDetails = navbarSolution
+    ? [
+        "STORY-001 (3 pts) - Build desktop navigation",
+        "STORY-002 (5 pts) - Add accessible mobile menu",
+        "STORY-003 (2 pts) - Add active-route behavior and tests",
+      ]
+    : [
         "STORY-001 (3 pts) - Create version-specific approval task",
         "STORY-002 (5 pts) - Capture authorized architect decision",
         "STORY-003 (2 pts) - Enforce downstream workflow block",
-      ],
-      `EPIC SAF-EPIC-001
+      ];
+  const backlogOutput = navbarSolution
+    ? `EPIC SAF-EPIC-001
+Goal: Deliver an accessible responsive project navbar.
+
+STORY-001 | 3 points | AC-001
+Create brand and desktop navigation from reusable link configuration.
+
+STORY-002 | 5 points | AC-002, AC-004
+Create mobile toggle, expanded state, keyboard behavior, and menu closing.
+
+STORY-003 | 2 points | AC-003, AC-005
+Indicate the active route and cover rendering, state, and accessibility with tests.`
+    : `EPIC SAF-EPIC-001
 Goal: Govern BRD approval before backlog progression.
 
 STORY-001 | 3 points | AC-001
@@ -1188,23 +1521,23 @@ Tasks: authorization guard; decision API; audit record; negative tests.
 
 STORY-003 | 2 points | AC-005
 As a Product Owner, I can proceed only with current-version approval.
-Tasks: workflow guard; invalidation hook; orchestration test.`,
-    ),
-    artifact(
-      "SAF-SPRINT-001",
-      "Sprint proposal",
-      "Prototype Sprint 01",
-      "accepted",
-      "Product Owner",
-      "A capacity-aware sprint plan sequences the governed vertical slice.",
-      ["SAF-EPIC-001"],
-      [
-        "Capacity: 12 points",
-        "Committed scope: 10 points",
-        "Dependency: approval state model before workflow guard",
-        "Definition of done includes five acceptance tests",
-      ],
-      `SPRINT 01 PLAN
+Tasks: workflow guard; invalidation hook; orchestration test.`;
+  const sprintOutput = navbarSolution
+    ? `SPRINT 01 PLAN
+Team capacity: 12 points | Committed: 10 | Buffer: 2
+
+Day 1-2  STORY-001  Desktop structure and navigation configuration
+Day 3-5  STORY-002  Responsive mobile interaction and accessibility
+Day 6-7  STORY-003  Active route, tests, and refinements
+Day 8    Independent review
+Day 9    Responsive and accessibility sanity suite
+Day 10   QA handoff and knowledge update
+
+EXIT CRITERIA
+- Runnable Vite project builds
+- Component tests pass
+- Keyboard and mobile behavior verified`
+    : `SPRINT 01 PLAN
 Team capacity: 12 points | Committed: 10 | Buffer: 2
 
 Day 1-2  STORY-001  Approval task and version model
@@ -1217,7 +1550,205 @@ Day 10   QA handoff and knowledge update
 EXIT CRITERIA
 - Five acceptance criteria pass
 - No blocking review finding
-- QA package and lineage graph complete`,
+- QA package and lineage graph complete`;
+  const gitDetails = navbarSolution
+    ? [
+        "Branch: feature/SAF-REQ-001-responsive-navbar",
+        "Commit: feat(navbar): add responsive project navigation [SAF-REQ-001]",
+        "PR: SAF-REQ-001 - Add responsive project navbar",
+      ]
+    : [
+        "Branch: feature/SAF-REQ-001-brd-approval",
+        "Commit: feat(approval): enforce BRD gate [SAF-REQ-001]",
+        "PR: SAF-REQ-001 - Govern BRD approval",
+      ];
+  const gitOutput = navbarSolution
+    ? `BRANCH
+feature/SAF-REQ-001-responsive-navbar
+
+COMMIT
+feat(navbar): add responsive project navigation [SAF-REQ-001]
+
+PULL REQUEST
+Title: SAF-REQ-001 - Add responsive project navbar
+Files: 10 | Component tests: 3 | Acceptance criteria: 5
+Traceability: REQ-001 -> BRD-001 -> EPIC-001 -> CHANGE-001`
+    : `BRANCH
+feature/SAF-REQ-001-brd-approval
+
+COMMIT
+feat(approval): enforce version-bound BRD gate [SAF-REQ-001]
+
+PULL REQUEST
+Title: SAF-REQ-001 - Govern BRD approval
+Traceability: REQ-001 -> BRD-001 -> EPIC-001 -> CHANGE-001
+Checks: unit 8/8 | acceptance 5/5 | lineage 100%
+Reviewers: Technical Reviewer, QA Lead`;
+  const reviewDetails = navbarSolution
+    ? [
+        "PASS - Semantic navigation landmark",
+        "PASS - Mobile expanded state exposed",
+        "PASS - Active route uses aria-current",
+        "PASS - Focus styles remain visible",
+      ]
+    : [
+        "PASS - Authorization path covered",
+        "PASS - Old-version approval reuse prevented",
+        "ADVISORY - Add notification retry telemetry",
+        "ADVISORY - Integrate enterprise identity before production",
+      ];
+  const reviewOutput = navbarSolution
+    ? `REVIEW RESULT: ACCEPTED
+
+Correctness
+[PASS] Links are configuration-driven and reusable.
+[PASS] Mobile menu state closes after navigation.
+
+Accessibility
+[PASS] Semantic nav label and toggle label present.
+[PASS] aria-expanded and aria-current are correct.
+[PASS] Keyboard focus remains visible.
+
+Maintainability
+[PASS] Component, styles, tests, and setup are separated.
+
+Blocking findings: 0`
+    : `REVIEW RESULT: ACCEPTED
+
+Correctness
+[PASS] Approval is bound to the current BRD version.
+[PASS] Rejection rationale is mandatory.
+[PASS] Downstream progression fails closed.
+
+Security
+[PASS] Assigned-architect authorization is explicit.
+[PASS] Unauthorized attempts are audit events.
+
+Traceability
+[PASS] Change references requirement, BRD, epic, and criteria.
+
+Blocking findings: 0 | Advisory findings: 2`;
+  const testDetails = navbarSolution
+    ? [
+        "AC-001 PASS - Desktop links render",
+        "AC-002 PASS - Mobile menu exposes expanded state",
+        "AC-003 PASS - Current route is identified",
+        "AC-004 PASS - Keyboard focus is visible",
+        "AC-005 PASS - Component test suite passes",
+      ]
+    : [
+        "AC-001 PASS - One task per version",
+        "AC-002 PASS - Approval permits progression",
+        "AC-003 PASS - Rejection returns to rework",
+        "AC-004 PASS - Unauthorized user refused",
+        "AC-005 PASS - New version requires approval",
+      ];
+  const testOutput = navbarSolution
+    ? `ACCEPTANCE SANITY REPORT
+Environment: generated-navbar-project | Result: 5 passed, 0 failed
+
+AC-001 PASS | Home, About, Projects, and Contact render
+AC-002 PASS | Mobile toggle changes aria-expanded
+AC-003 PASS | Projects route exposes aria-current="page"
+AC-004 PASS | All interactive controls are keyboard reachable
+AC-005 PASS | Component test suite completes successfully
+
+Build: PASS | Required evidence captured: 5/5`
+    : `ACCEPTANCE SANITY REPORT
+Environment: prototype-001 | Result: 5 passed, 0 failed
+
+AC-001 PASS | v1 creates exactly one open approval task
+AC-002 PASS | current-version approval unlocks backlog
+AC-003 PASS | rejection returns status to BRD_REWORK_REQUIRED
+AC-004 PASS | unassigned developer receives AUTHORIZATION_DENIED
+AC-005 PASS | editing v1 to v2 invalidates the v1 decision
+
+Duration: 1.42s | Required evidence captured: 5/5`;
+  const qaDetails = navbarSolution
+    ? [
+        "Build: generated-navbar-project",
+        "Install: npm install",
+        "Run: npm run dev",
+        "Test: npm test",
+      ]
+    : [
+        "Build: prototype-001",
+        "Email delivery simulated",
+        "Enterprise identity not integrated",
+        "Ready for exploratory QA",
+      ];
+  const qaOutput = navbarSolution
+    ? `QA HANDOFF PACKAGE
+Build: generated-navbar-project
+Scope: Responsive project navigation
+Files: 10 runnable project files
+Acceptance evidence: 5/5 passed
+Review: accepted, 0 blocking findings
+
+RUN
+npm install
+npm run dev
+
+VERIFY
+npm test
+npm run build
+
+QA FOCUS
+Responsive breakpoints, keyboard navigation, active routes, and screen readers.`
+    : `QA HANDOFF PACKAGE
+Build: prototype-001
+Scope: BRD approval vertical slice
+Stories: STORY-001, STORY-002, STORY-003
+Acceptance evidence: 5/5 passed
+Review: accepted, 0 blocking findings
+
+KNOWN LIMITATIONS
+- Email notification is simulated.
+- Enterprise identity is not integrated.
+- Git operations remain dry-run only.
+
+RECOMMENDED QA FOCUS
+Authorization boundaries, version invalidation, concurrent decisions.`;
+  state.run = "running";
+  state.isRunning = true;
+  addActivity(
+    "Orchestrator",
+    `Automatic policy verified for ${brdId}; authorized agents A04-A11`,
+    "decision",
+  );
+  render();
+
+  const downstreamArtifacts = [
+    artifact(
+      "SAF-EPIC-001",
+      "Backlog",
+      navbarSolution ? "Responsive navbar epic" : "Governed BRD approval epic",
+      "ready",
+      "Product Owner",
+      "One epic, three implementation stories, nine tasks, and five linked criteria.",
+      [brdId, "SAF-REQ-001"],
+      backlogDetails,
+      backlogOutput,
+    ),
+    artifact(
+      "SAF-SPRINT-001",
+      "Sprint proposal",
+      "Prototype Sprint 01",
+      "accepted",
+      "Product Owner",
+      navbarSolution
+        ? "A capacity-aware sprint plan sequences the complete navbar project."
+        : "A capacity-aware sprint plan sequences the governed vertical slice.",
+      ["SAF-EPIC-001"],
+      [
+        "Capacity: 12 points",
+        "Committed scope: 10 points",
+        navbarSolution
+          ? "Dependency: component structure before responsive interaction"
+          : "Dependency: approval state model before workflow guard",
+        "Definition of done includes five acceptance tests",
+      ],
+      sprintOutput,
     ),
     artifact(
       "SAF-CHANGE-001",
@@ -1240,24 +1771,8 @@ EXIT CRITERIA
       "Platform Administrator",
       "Prepared a traceable branch, conventional commit, and pull-request package.",
       ["SAF-CHANGE-001"],
-      [
-        "Branch: feature/SAF-REQ-001-brd-approval",
-        "Commit: feat(approval): enforce BRD gate [SAF-REQ-001]",
-        "PR: SAF-REQ-001 - Govern BRD approval",
-      ],
-      `BRANCH
-feature/SAF-REQ-001-brd-approval
-
-COMMIT
-feat(approval): enforce version-bound BRD gate [SAF-REQ-001]
-
-PULL REQUEST
-Title: SAF-REQ-001 - Govern BRD approval
-Traceability: REQ-001 -> BRD-001 -> EPIC-001 -> CHANGE-001
-Checks: unit 8/8 | acceptance 5/5 | lineage 100%
-Reviewers: Technical Reviewer, QA Lead
-
-No remote write is executed in demonstration mode.`,
+      gitDetails,
+      gitOutput,
     ),
     artifact(
       "SAF-REVIEW-001",
@@ -1267,27 +1782,8 @@ No remote write is executed in demonstration mode.`,
       "Technical Reviewer",
       "Independent review found no blocker and recorded two advisory observations.",
       ["SAF-CHANGE-001", "SAF-GIT-001"],
-      [
-        "PASS - Authorization path covered",
-        "PASS - Old-version approval reuse prevented",
-        "ADVISORY - Add notification retry telemetry",
-        "ADVISORY - Integrate enterprise identity before production",
-      ],
-      `REVIEW RESULT: ACCEPTED
-
-Correctness
-[PASS] Approval is bound to the current BRD version.
-[PASS] Rejection rationale is mandatory.
-[PASS] Downstream progression fails closed.
-
-Security
-[PASS] Assigned-architect authorization is explicit.
-[PASS] Unauthorized attempts are audit events.
-
-Traceability
-[PASS] Change references requirement, BRD, epic, and criteria.
-
-Blocking findings: 0 | Advisory findings: 2`,
+      reviewDetails,
+      reviewOutput,
     ),
     artifact(
       "SAF-TEST-001",
@@ -1297,23 +1793,8 @@ Blocking findings: 0 | Advisory findings: 2`,
       "QA Lead",
       "Executed five criterion-level scenarios with captured expected and actual results.",
       ["SAF-REVIEW-001", brdId],
-      [
-        "AC-001 PASS - One task per version",
-        "AC-002 PASS - Approval permits progression",
-        "AC-003 PASS - Rejection returns to rework",
-        "AC-004 PASS - Unauthorized user refused",
-        "AC-005 PASS - New version requires approval",
-      ],
-      `ACCEPTANCE SANITY REPORT
-Environment: prototype-001 | Result: 5 passed, 0 failed
-
-AC-001 PASS | v1 creates exactly one open approval task
-AC-002 PASS | current-version approval unlocks backlog
-AC-003 PASS | rejection returns status to BRD_REWORK_REQUIRED
-AC-004 PASS | unassigned developer receives AUTHORIZATION_DENIED
-AC-005 PASS | editing v1 to v2 invalidates the v1 decision
-
-Duration: 1.42s | Required evidence captured: 5/5`,
+      testDetails,
+      testOutput,
     ),
     artifact(
       "SAF-QA-001",
@@ -1323,26 +1804,8 @@ Duration: 1.42s | Required evidence captured: 5/5`,
       "QA Lead",
       "Packaged scope, build, review, tests, risks, limitations, and entry criteria.",
       ["SAF-TEST-001", "SAF-REVIEW-001", "SAF-GIT-001"],
-      [
-        "Build: prototype-001",
-        "Email delivery simulated",
-        "Enterprise identity not integrated",
-        "Ready for exploratory QA",
-      ],
-      `QA HANDOFF PACKAGE
-Build: prototype-001
-Scope: BRD approval vertical slice
-Stories: STORY-001, STORY-002, STORY-003
-Acceptance evidence: 5/5 passed
-Review: accepted, 0 blocking findings
-
-KNOWN LIMITATIONS
-- Email notification is simulated.
-- Enterprise identity is not integrated.
-- Git operations remain dry-run only.
-
-RECOMMENDED QA FOCUS
-Authorization boundaries, version invalidation, concurrent decisions.`,
+      qaDetails,
+      qaOutput,
     ),
     artifact(
       "SAF-NODE-001",
@@ -1420,7 +1883,7 @@ function resetDemo() {
         id: 1,
         time: time(),
         agent: "Orchestrator",
-        message: "Run initialized in safe demonstration mode",
+        message: "Autonomous full-project run initialized",
         status: "ready",
       },
     ],
@@ -1434,7 +1897,7 @@ function resetDemo() {
   };
   el("#requirement").value = DEFAULT_REQUIREMENT;
   el("#decision-comment").value = "";
-  setNotice("Ready to process SAF-REQ-001 through the governed lifecycle.");
+  setNotice("Ready to build SAF-REQ-001 as a complete working project.");
   render();
 }
 
@@ -1457,6 +1920,7 @@ el("#reset-demo").addEventListener("click", resetDemo);
 el("#unauthorized-demo").addEventListener("click", unauthorizedDecision);
 el("#download-code").addEventListener("click", downloadCodeBundle);
 el("#download-doc").addEventListener("click", downloadWordReport);
+el("#download-zip").addEventListener("click", downloadProjectZip);
 el("#download-file").addEventListener("click", downloadSelectedFile);
 el("#copy-file").addEventListener("click", copySelectedFile);
 el("#load-navbar-example").addEventListener("click", loadNavbarExample);
