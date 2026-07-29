@@ -1,0 +1,53 @@
+name: Gate or design decision
+description: Record an approval, rejection, or governed project decision.
+title: "[DECISION] "
+labels:
+  - decision
+body:
+  - type: input
+    id: gate
+    attributes:
+      label: Gate or decision ID
+      placeholder: SAF-GATE-001
+    validations:
+      required: true
+  - type: input
+    id: artifact
+    attributes:
+      label: Artifact and version
+      placeholder: SAF-SCENARIO-001 version 1
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Decision context
+    validations:
+      required: true
+  - type: dropdown
+    id: result
+    attributes:
+      label: Decision
+      options:
+        - Pending review
+        - Approved
+        - Changes requested
+        - Rejected
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale or required changes
+    validations:
+      required: true
+  - type: input
+    id: approver
+    attributes:
+      label: Approver
+    validations:
+      required: true
+  - type: textarea
+    id: links
+    attributes:
+      label: Related requirements, issues, and pull requests

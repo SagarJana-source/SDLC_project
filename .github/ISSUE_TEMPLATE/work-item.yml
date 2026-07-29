@@ -1,0 +1,55 @@
+name: Controlled work item
+description: Propose work linked to an approved requirement and gate.
+title: "[WORK] "
+labels:
+  - work-item
+body:
+  - type: input
+    id: requirement
+    attributes:
+      label: Requirement ID
+      placeholder: SAF-REQ-001
+    validations:
+      required: true
+  - type: input
+    id: gate
+    attributes:
+      label: Entry gate
+      placeholder: SAF-GATE-001
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Required outcome
+      description: State the observable result, not the implementation approach.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance conditions
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies and related work
+  - type: dropdown
+    id: gate_status
+    attributes:
+      label: Is the entry gate approved?
+      options:
+        - "No - keep this issue blocked"
+        - "Yes - approval evidence is linked"
+    validations:
+      required: true
+  - type: input
+    id: approval
+    attributes:
+      label: Approval evidence
+      placeholder: Link to the decision issue or ADR
+  - type: textarea
+    id: risks
+    attributes:
+      label: Security, data, and delivery risks

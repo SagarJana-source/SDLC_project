@@ -1,0 +1,46 @@
+name: Defect
+description: Report a reproducible problem with traceability.
+title: "[DEFECT] "
+labels:
+  - defect
+body:
+  - type: input
+    id: requirement
+    attributes:
+      label: Related requirement or artifact
+      placeholder: SAF-REQ-001
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs, screenshots, or test evidence
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Low
+        - Medium
+        - High
+        - Critical
+    validations:
+      required: true
