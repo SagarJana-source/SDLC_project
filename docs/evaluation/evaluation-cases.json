@@ -1,0 +1,12 @@
+{
+  "suite": "SAF-EVAL-001",
+  "cases": [
+    {"id": "EVAL-001", "name": "Complete requirement reaches BRD gate", "expected": "WAITING_FOR_BRD_APPROVAL"},
+    {"id": "EVAL-002", "name": "Empty requirement is blocked", "expected": "VALIDATION_ERROR"},
+    {"id": "EVAL-003", "name": "Unauthorized approval is refused", "expected": "AUTHORIZATION_ERROR"},
+    {"id": "EVAL-004", "name": "BRD rejection blocks backlog", "expected": "BRD_REWORK_REQUIRED"},
+    {"id": "EVAL-005", "name": "BRD revision requires new approval", "expected": "WAITING_FOR_BRD_APPROVAL"},
+    {"id": "EVAL-006", "name": "Approved BRD completes delivery run", "expected": "COMPLETED"},
+    {"id": "EVAL-007", "name": "Completed run has full lineage", "expected": "100_PERCENT_COVERAGE"}
+  ]
+}

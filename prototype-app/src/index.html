@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SDLC Control Room</title>
+    <meta name="description" content="A human-governed prototype for running and tracing an 11-agent software delivery lifecycle.">
+    <meta property="og:title" content="SDLC Control Room">
+    <meta property="og:description" content="Run the 11-agent delivery lifecycle while preserving approval, test, and lineage evidence.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="__ORIGIN__/">
+    <meta property="og:image" content="__ORIGIN__/og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SDLC Control Room">
+    <meta name="twitter:description" content="Trace every decision. Keep humans in command.">
+    <meta name="twitter:image" content="__ORIGIN__/og.png">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <main>
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="SDLC Control Room home">
+          <span class="brandMark">S</span>
+          <span><strong>SDLC Control Room</strong><small>Agentic delivery prototype</small></span>
+        </a>
+        <div class="topbarMeta">
+          <span class="simulationTag">Deterministic simulation</span>
+          <a class="githubLink" href="https://github.com/SagarJana-source/SDLC_project" target="_blank" rel="noreferrer">View repository ↗</a>
+        </div>
+      </header>
+
+      <section class="hero" id="top">
+        <div>
+          <p class="eyebrow">Human-governed delivery orchestration</p>
+          <h1>Trace every decision.<br><span>Keep humans in command.</span></h1>
+          <p class="heroCopy">Move one feature from raw requirement to QA-ready evidence through 11 specialized agents—without losing the reason behind the work.</p>
+        </div>
+        <div class="heroStatus" aria-label="Current workflow status">
+          <span class="statusBeacon ready" id="status-beacon"></span>
+          <div><small>Current state</small><strong id="status-label">Ready</strong></div>
+          <span class="stateCode" id="state-code">NOT_STARTED</span>
+        </div>
+      </section>
+
+      <section class="metricGrid" aria-label="Run metrics">
+        <article class="metricCard">
+          <span>Agents complete</span>
+          <strong><span id="agent-count">0</span><small>/11</small></strong>
+          <div class="miniTrack"><i id="agent-progress"></i></div>
+        </article>
+        <article class="metricCard">
+          <span>Artifacts</span><strong id="artifact-count">0</strong><small>versioned and attributable</small>
+        </article>
+        <article class="metricCard">
+          <span>Lineage coverage</span><strong><span id="lineage-percent">0</span><small>%</small></strong><small id="lineage-note">in progress</small>
+        </article>
+        <article class="metricCard accentMetric">
+          <span>Human gates</span><strong id="gate-count">0/1</strong><small>architect decision enforced</small>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <article class="panel requirementPanel">
+          <div class="panelHeading">
+            <div><p class="sectionLabel">01 · Intake</p><h2>Feature requirement</h2></div>
+            <span class="artifactId">SAF-REQ-001</span>
+          </div>
+          <label for="requirement">Business requirement</label>
+          <textarea id="requirement">When the framework generates a BRD, notify the designated architect and require approval of that exact version before backlog decomposition begins. Record the decision, reviewer, timestamp, comments, and complete requirement lineage.</textarea>
+          <div class="requirementMeta"><span>Requester · Product Operations</span><span>Priority · High</span><span>Scenario · SAF-SCENARIO-001</span></div>
+          <div class="actionRow">
+            <button class="primaryButton" id="run-gate">Run to approval gate <span>→</span></button>
+            <button class="primaryButton hidden" id="complete-run">Complete delivery run <span>→</span></button>
+            <button class="primaryButton hidden" id="reset-demo">Reset demonstration <span>↻</span></button>
+            <p class="runNotice" id="run-notice" role="status">Ready to process SAF-REQ-001 through the governed lifecycle.</p>
+          </div>
+        </article>
+
+        <aside class="panel guardrailPanel">
+          <p class="sectionLabel">Control policy</p><h2>Authority stays human</h2>
+          <ul>
+            <li><span>01</span>Agents prepare; named people approve.</li>
+            <li><span>02</span>Approval binds to one artifact version.</li>
+            <li><span>03</span>Failed checks remain visible and blocking.</li>
+          </ul>
+          <div class="policyFooter"><span class="shield">✓</span>Production writes disabled</div>
+        </aside>
+      </section>
+
+      <section class="pipelineSection">
+        <div class="sectionHeader">
+          <div><p class="sectionLabel">02 · Orchestration</p><h2>Eleven-agent delivery line</h2></div>
+          <p>Each output becomes a linked, reviewable input to the next stage.</p>
+        </div>
+        <div class="agentGrid" id="agent-grid"></div>
+      </section>
+
+      <section class="approvalSection hidden" id="approval-section">
+        <div class="approvalIntro">
+          <p class="sectionLabel">03 · Human gate</p>
+          <span class="gateIcon" id="gate-icon">!</span>
+          <h2 id="gate-title">BRD v1 needs an architect decision</h2>
+          <p id="gate-description">Backlog decomposition cannot start until the assigned architect decides on this exact version.</p>
+        </div>
+        <div class="decisionCard">
+          <div class="reviewer">
+            <span>AS</span><div><small>Assigned approver</small><strong>Architect A. Sharma</strong></div><b>Authorized</b>
+          </div>
+          <div id="decision-form">
+            <label for="decision-comment">Decision comment (required for rejection)</label>
+            <textarea id="decision-comment" placeholder="Add rationale or required changes..."></textarea>
+            <div class="decisionActions">
+              <button class="approveButton" id="approve-brd">Approve version</button>
+              <button class="rejectButton" id="reject-brd">Reject</button>
+            </div>
+            <button class="textButton" id="unauthorized-demo">Demonstrate unauthorized attempt</button>
+          </div>
+          <button class="primaryButton fullButton hidden" id="revise-brd">Revise BRD and create v2 <span>→</span></button>
+          <button class="primaryButton fullButton hidden" id="continue-agents">Continue remaining agents <span>→</span></button>
+        </div>
+      </section>
+
+      <section class="evidenceSection">
+        <div class="sectionHeader">
+          <div><p class="sectionLabel">04 · Evidence</p><h2>Artifact and lineage explorer</h2></div>
+          <p>Select any artifact to see who owns it and what it traces to.</p>
+        </div>
+        <div class="evidenceGrid">
+          <div class="artifactList panel">
+            <div class="listHeading"><span>Artifact</span><span>Status</span></div>
+            <div id="artifact-list">
+              <div class="emptyState"><span>◇</span><p>Artifacts appear after requirement intake runs.</p></div>
+            </div>
+          </div>
+          <article class="artifactDetail panel" id="artifact-detail">
+            <div class="emptyDetail"><span>SAF</span><h3>Lineage begins with intent</h3><p>Run the lifecycle to create governed artifacts and inspect their complete chain of evidence.</p></div>
+          </article>
+          <aside class="auditPanel panel">
+            <div class="auditHeading"><div><p class="sectionLabel">Audit</p><h3>Decision trail</h3></div><span id="audit-count">1</span></div>
+            <div class="auditList" id="audit-list"></div>
+          </aside>
+        </div>
+      </section>
+
+      <footer>
+        <div><span class="brandMark">S</span><p><strong>SDLC Control Room</strong><small>Prototype · synthetic data · no production writes</small></p></div>
+        <p>SAF-SCENARIO-001 · Built for governed experimentation</p>
+      </footer>
+    </main>
+  </body>
+</html>

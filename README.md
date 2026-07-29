@@ -11,14 +11,16 @@ The prototype is intended to prove that a raw business requirement can produce s
 | Project structure | Ready |
 | Step 1: Prototype scenario | Approved |
 | Step 2: Prototype boundaries | Approved |
-| Step 3: Users and responsibilities | Awaiting stakeholder approval |
-| Step 4 and later | Blocked by the Step 3 approval gate |
-| Framework implementation | Not started |
-| GitHub remote | Not configured |
+| Step 3: Users and responsibilities | Approved |
+| Steps 4-17: Accelerated blueprint and review | Complete |
+| Interactive prototype | Built and verified |
+| GitHub remote | Configured and public |
 
 The current scenario is documented in [docs/scenarios/01-brd-approval.md](docs/scenarios/01-brd-approval.md).
 The approved prototype boundaries are documented in [docs/scope/02-prototype-boundaries.md](docs/scope/02-prototype-boundaries.md).
-The proposed users and responsibilities are documented in [docs/roles/03-users-and-responsibilities.md](docs/roles/03-users-and-responsibilities.md).
+The approved users and responsibilities are documented in [docs/roles/03-users-and-responsibilities.md](docs/roles/03-users-and-responsibilities.md).
+The completed Steps 4-17 are documented in [docs/blueprint/04-17-accelerated-blueprint.md](docs/blueprint/04-17-accelerated-blueprint.md).
+The working browser prototype is in [prototype-app/](prototype-app/).
 
 ## Prototype scenario
 
@@ -54,12 +56,11 @@ Reserved folders do not contain implementation or later-stage design. They estab
 
 ## Working with the project
 
-1. Review the proposed users and responsibilities.
-2. Record approval or requested changes in a GitHub issue.
-3. Do not start Step 4 until the Step 3 approval issue is closed as approved.
-4. Create one branch per approved work item.
-5. Link every pull request to its issue and requirement identifier.
-6. Require review before merging to `main`.
+1. Open the hosted prototype or run `npm run dev` from `prototype-app/`.
+2. Select **Run to approval gate**.
+3. Demonstrate rejection, revision, version-specific approval, and completion.
+4. Inspect artifacts, lineage, test evidence, and the audit trail.
+5. Use GitHub issues and pull requests for pilot feedback.
 
 Detailed rules are in [CONTRIBUTING.md](CONTRIBUTING.md) and [GOVERNANCE.md](GOVERNANCE.md).
 
@@ -72,16 +73,15 @@ Detailed rules are in [CONTRIBUTING.md](CONTRIBUTING.md) and [GOVERNANCE.md](GOV
 
 These identifiers should appear in related issues, branches, commits, pull requests, and future artifacts.
 
-## What is intentionally not included
+## What is intentionally simulated
 
-- Functional application code
-- Agent prompts or runtime definitions
-- Technology-stack selection
 - Production credentials or integrations
-- CI/CD deployment
-- A GitHub repository or remote
-- Design work belonging to Step 2 or later
+- Live language-model agent calls
+- Enterprise knowledge retrieval
+- Autonomous Git or pull-request writes from the browser
+- Production identity and email delivery
+- Production deployment of generated application changes
 
 ## Next authorized action
 
-Obtain stakeholder approval or requested changes for `SAF-ROLES-001`. Step 4 must not begin before that decision is recorded.
+Run the demonstration and decide whether to begin a pilot that replaces selected deterministic agents with live integrations.

@@ -1,0 +1,34 @@
+{
+  "id": "SAF-WORKFLOW-001",
+  "initialState": "NOT_STARTED",
+  "terminalState": "COMPLETED",
+  "states": [
+    "NOT_STARTED",
+    "ANALYZING_REQUIREMENT",
+    "RETRIEVING_KNOWLEDGE",
+    "GENERATING_BRD",
+    "WAITING_FOR_BRD_APPROVAL",
+    "BRD_REWORK_REQUIRED",
+    "DECOMPOSING_BACKLOG",
+    "PLANNING_SPRINT",
+    "GENERATING_CHANGE",
+    "PREPARING_GIT",
+    "REVIEWING_CHANGE",
+    "CHANGES_REQUIRED",
+    "RUNNING_SANITY_TESTS",
+    "TESTS_FAILED",
+    "PREPARING_QA_HANDOFF",
+    "UPDATING_KNOWLEDGE",
+    "COMPLETED"
+  ],
+  "humanGates": [
+    {"id": "BRD_APPROVAL", "state": "WAITING_FOR_BRD_APPROVAL", "approverRole": "Solution Architect", "rejectState": "BRD_REWORK_REQUIRED"}
+  ],
+  "controls": {
+    "agentsMaySelfApprove": false,
+    "allowProductionWrites": false,
+    "allowAutonomousMerge": false,
+    "requireAuditEvents": true,
+    "invalidateApprovalOnVersionChange": true
+  }
+}

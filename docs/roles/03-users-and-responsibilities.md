@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft for stakeholder approval.
+Approved for prototype delivery. Approval is recorded in `docs/decisions/DEC-0003-accelerated-prototype-authorization.md`.
 
 - Related scenario: `SAF-SCENARIO-001`
 - Scope boundary: `SAF-SCOPE-001`
@@ -490,4 +490,4 @@ Step 3 is complete when the stakeholder confirms:
 
 ## Approval checkpoint
 
-Approve `SAF-ROLES-001` as written or request changes. Step 4 must not start until `SAF-GATE-003` is approved.
+Approved by the project stakeholder through the project task. Material responsibility changes require a new decision.

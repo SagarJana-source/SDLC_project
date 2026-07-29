@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "agents": [
+    {"order": 1, "id": "requirement-intake", "name": "Requirement Intake", "output": "Normalized requirement", "humanOwner": "Business Analyst"},
+    {"order": 2, "id": "knowledge-retrieval", "name": "Knowledge Retrieval", "output": "Ranked knowledge references", "humanOwner": "Knowledge Curator"},
+    {"order": 3, "id": "brd-generation", "name": "BRD Generation", "output": "Versioned BRD", "humanOwner": "Business Analyst"},
+    {"order": 4, "id": "backlog-decomposition", "name": "Backlog Decomposition", "output": "Epic, stories and tasks", "humanOwner": "Product Owner"},
+    {"order": 5, "id": "sprint-planning", "name": "Sprint Planning", "output": "Sprint proposal", "humanOwner": "Product Owner"},
+    {"order": 6, "id": "code-generation", "name": "Code Generation", "output": "Code and test proposal", "humanOwner": "Application Developer"},
+    {"order": 7, "id": "git-operations", "name": "Git Operations", "output": "Branch, commit and PR metadata", "humanOwner": "Platform Administrator"},
+    {"order": 8, "id": "code-review", "name": "Code Review", "output": "Review findings", "humanOwner": "Technical Reviewer"},
+    {"order": 9, "id": "sanity-testing", "name": "Sanity Testing", "output": "Test evidence", "humanOwner": "QA Lead"},
+    {"order": 10, "id": "qa-handoff", "name": "QA Handoff", "output": "QA handoff package", "humanOwner": "QA Lead"},
+    {"order": 11, "id": "knowledge-update", "name": "Knowledge Graph Update", "output": "Lineage nodes and edges", "humanOwner": "Knowledge Curator"}
+  ]
+}

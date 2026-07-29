@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "sources": [
+    {"id": "KNOW-001", "title": "BRD Versioning Decision", "summary": "Any material BRD edit creates a new version and requires fresh approval.", "owner": "Solution Architect", "status": "approved", "tags": ["brd", "versioning", "approval"], "provenance": "Sanitized prototype ADR"},
+    {"id": "KNOW-002", "title": "Segregation of Duties Policy", "summary": "Authors cannot be the sole approvers of governed work.", "owner": "Security Reviewer", "status": "approved", "tags": ["governance", "approval", "security"], "provenance": "Sanitized prototype policy"},
+    {"id": "KNOW-003", "title": "Git Traceability Convention", "summary": "Requirement identifiers must appear in issues, branches, commits and pull requests.", "owner": "Platform Administrator", "status": "approved", "tags": ["git", "traceability"], "provenance": "Prototype contribution guide"},
+    {"id": "KNOW-004", "title": "Acceptance Coverage Rule", "summary": "Every acceptance criterion requires test evidence or an approved waiver.", "owner": "QA Lead", "status": "approved", "tags": ["testing", "acceptance-criteria"], "provenance": "Sanitized QA standard"},
+    {"id": "KNOW-005", "title": "QA Handoff Checklist", "summary": "Handoff includes scope, criteria, code references, review findings, test evidence, defects and limitations.", "owner": "QA Lead", "status": "approved", "tags": ["qa", "handoff"], "provenance": "Prototype QA template"}
+  ]
+}
