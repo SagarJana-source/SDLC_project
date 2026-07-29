@@ -13,7 +13,7 @@ const types = {
 };
 
 const server = createServer(async (request, response) => {
-  const url = new URL(request.url || "/", `http://localhost:${port}`);
+  const url = new URL(request.url || "/", `http://127.0.0.1:${port}`);
   const source =
     url.pathname === "/"
       ? resolve(root, "src/index.html")
@@ -32,7 +32,7 @@ const server = createServer(async (request, response) => {
   if (url.pathname === "/") {
     const html = await readFile(source, "utf8");
     response.writeHead(200, { "content-type": "text/html; charset=utf-8" });
-    response.end(html.replaceAll("__ORIGIN__", `http://localhost:${port}`));
+    response.end(html.replaceAll("__ORIGIN__", `http://127.0.0.1:${port}`));
     return;
   }
   response.writeHead(200, { "content-type": types[extname(source)] });
