@@ -26,7 +26,249 @@ const AGENT_TASKS = [
   "Write artifacts and relationships into the delivery knowledge graph.",
 ];
 
+function buildNavbarSolution(requirement) {
+  const component = String.raw`import { useState } from "react";
+import "./Navbar.css";
+
+const links = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Projects", href: "/projects" },
+  { label: "Contact", href: "/contact" },
+];
+
+export default function Navbar({ currentPath = "/" }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <header className="site-header">
+      <nav className="navbar" aria-label="Primary navigation">
+        <a className="navbar__brand" href="/" aria-label="Project home">
+          Northstar
+        </a>
+
+        <button
+          className="navbar__toggle"
+          type="button"
+          aria-expanded={isOpen}
+          aria-controls="primary-menu"
+          aria-label="Toggle navigation menu"
+          onClick={() => setIsOpen((open) => !open)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+
+        <ul
+          className={"navbar__links " + (isOpen ? "is-open" : "")}
+          id="primary-menu"
+        >
+          {links.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                aria-current={currentPath === link.href ? "page" : undefined}
+                onClick={() => setIsOpen(false)}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </header>
+  );
+}`;
+
+  const styles = String.raw`:root {
+  --nav-ink: #102a2a;
+  --nav-accent: #0f5c59;
+  --nav-surface: #fffdf7;
+}
+
+.site-header {
+  background: var(--nav-surface);
+  border-bottom: 1px solid #d9ded4;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.navbar {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1200px;
+  min-height: 72px;
+  padding: 0 24px;
+}
+
+.navbar__brand {
+  color: var(--nav-ink);
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.navbar__links {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar__links a {
+  border-radius: 8px;
+  color: #5d706d;
+  display: block;
+  font-weight: 650;
+  padding: 10px 13px;
+  text-decoration: none;
+}
+
+.navbar__links a:hover,
+.navbar__links a:focus-visible,
+.navbar__links a[aria-current="page"] {
+  background: #e3f3e9;
+  color: var(--nav-accent);
+}
+
+.navbar__toggle {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: none;
+  padding: 8px;
+}
+
+.navbar__toggle span {
+  background: var(--nav-ink);
+  display: block;
+  height: 2px;
+  margin: 5px 0;
+  width: 24px;
+}
+
+@media (max-width: 700px) {
+  .navbar__toggle { display: block; }
+  .navbar__links {
+    background: var(--nav-surface);
+    border-bottom: 1px solid #d9ded4;
+    display: none;
+    left: 0;
+    padding: 14px 24px 22px;
+    position: absolute;
+    right: 0;
+    top: 72px;
+  }
+  .navbar__links.is-open { display: grid; }
+}`;
+
+  const tests = String.raw`import { fireEvent, render, screen } from "@testing-library/react";
+import Navbar from "./Navbar";
+
+describe("Navbar", () => {
+  test("renders configured navigation links", () => {
+    render(<Navbar />);
+    ["Home", "About", "Projects", "Contact"].forEach((label) => {
+      expect(screen.getByRole("link", { name: label })).toBeInTheDocument();
+    });
+  });
+
+  test("marks the current route", () => {
+    render(<Navbar currentPath="/projects" />);
+    expect(screen.getByRole("link", { name: "Projects" }))
+      .toHaveAttribute("aria-current", "page");
+  });
+
+  test("opens the mobile menu accessibly", () => {
+    render(<Navbar />);
+    const toggle = screen.getByRole("button", {
+      name: "Toggle navigation menu",
+    });
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+  });
+});`;
+
+  const readme = `# Generated responsive navbar
+
+## Source requirement
+${requirement}
+
+## Included behavior
+- Responsive desktop and mobile navigation
+- Accessible hamburger control with aria-expanded
+- Current-route indication with aria-current
+- Keyboard-visible focus states
+- Reusable link configuration
+
+## Files
+- src/components/Navbar.jsx
+- src/components/Navbar.css
+- src/components/Navbar.test.jsx
+
+## Usage
+Import Navbar and render <Navbar currentPath={location.pathname} />.
+`;
+
+  return {
+    type: "navbar",
+    title: "Responsive project navbar",
+    summary:
+      "A responsive, accessible React navbar with mobile navigation, active-route state, styles, and tests.",
+    files: [
+      { name: "src/components/Navbar.jsx", language: "React JSX", content: component },
+      { name: "src/components/Navbar.css", language: "CSS", content: styles },
+      { name: "src/components/Navbar.test.jsx", language: "Test", content: tests },
+      { name: "README.md", language: "Markdown", content: readme },
+    ],
+  };
+}
+
+function buildGenericSolution(requirement) {
+  const source = `export const generatedFeature = {
+  requirement: ${JSON.stringify(requirement)},
+  status: "prototype",
+  traceabilityId: "SAF-REQ-001",
+};
+
+export function executeFeature(input) {
+  return {
+    accepted: Boolean(input),
+    input,
+    requirement: generatedFeature.requirement,
+  };
+}`;
+  return {
+    type: "generic",
+    title: "Generated feature scaffold",
+    summary:
+      "A traceable implementation scaffold generated from the submitted requirement.",
+    files: [
+      { name: "src/generated-feature.js", language: "JavaScript", content: source },
+      {
+        name: "README.md",
+        language: "Markdown",
+        content: `# Generated feature\n\nRequirement: ${requirement}\n\nTraceability: SAF-REQ-001`,
+      },
+    ],
+  };
+}
+
+function buildGeneratedSolution(requirement) {
+  return /\b(navbar|navigation bar|nav bar)\b/i.test(requirement)
+    ? buildNavbarSolution(requirement)
+    : buildGenericSolution(requirement);
+}
+
 const DEFAULT_REQUIREMENT = document.querySelector("#requirement").value;
+const NAVBAR_EXAMPLE =
+  "Create a responsive navigation bar for the project with Home, About, Projects, and Contact links. Include a mobile hamburger menu, active-page indication, keyboard navigation, screen-reader labels, and automated component tests.";
 const el = (selector) => document.querySelector(selector);
 const escapeHtml = (value) =>
   String(value).replace(
@@ -75,6 +317,8 @@ let state = {
   latestOutput: null,
   isRunning: false,
   startedAt: null,
+  solution: null,
+  selectedFile: "",
 };
 
 function artifact(
@@ -216,6 +460,148 @@ function renderExecution() {
     .join("");
 }
 
+function renderSolution() {
+  const section = el("#solution-section");
+  if (!state.solution) {
+    section.classList.add("hidden");
+    return;
+  }
+
+  section.classList.remove("hidden");
+  el("#solution-title").textContent = state.solution.title;
+  const selected =
+    state.solution.files.find((file) => file.name === state.selectedFile) ??
+    state.solution.files[0];
+  state.selectedFile = selected.name;
+
+  el("#file-grid").innerHTML = state.solution.files
+    .map(
+      (file) => `<button class="fileCard ${file.name === selected.name ? "selected" : ""}" type="button" data-file-name="${escapeHtml(file.name)}">
+        <span>${escapeHtml(file.language)}</span>
+        <strong>${escapeHtml(file.name.split("/").at(-1))}</strong>
+        <small>${escapeHtml(file.name)}</small>
+      </button>`,
+    )
+    .join("");
+  el("#file-grid").querySelectorAll(".fileCard").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.selectedFile = button.dataset.fileName;
+      renderSolution();
+    });
+  });
+
+  el("#selected-file-name").textContent = selected.name;
+  el("#generated-code").textContent = selected.content;
+
+  if (state.solution.type === "navbar") {
+    el("#rendered-solution").innerHTML = `<div class="navbarDemo">
+      <nav aria-label="Generated navbar preview">
+        <a class="demoBrand" href="#top">Northstar</a>
+        <button class="demoMenuButton" type="button" aria-expanded="false" aria-controls="demo-links" aria-label="Toggle navigation menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="demoLinks" id="demo-links">
+          <a class="active" href="#top">Home</a>
+          <a href="#execution-section">About</a>
+          <a href="#solution-section">Projects</a>
+          <a href="#artifact-detail">Contact</a>
+        </div>
+      </nav>
+      <div class="demoCanvas">
+        <p>Generated from your requirement</p>
+        <h4>A responsive navbar<br>ready for the project.</h4>
+        <span>Resize the window or use the menu button to inspect responsive behavior.</span>
+      </div>
+    </div>`;
+    const menuButton = el("#rendered-solution").querySelector(".demoMenuButton");
+    const links = el("#rendered-solution").querySelector(".demoLinks");
+    menuButton.addEventListener("click", () => {
+      const expanded = menuButton.getAttribute("aria-expanded") === "true";
+      menuButton.setAttribute("aria-expanded", String(!expanded));
+      links.classList.toggle("open", !expanded);
+    });
+  } else {
+    el("#rendered-solution").innerHTML = `<div class="genericDemo">
+      <span>SAF-REQ-001</span>
+      <h4>${escapeHtml(state.solution.title)}</h4>
+      <p>${escapeHtml(state.solution.summary)}</p>
+    </div>`;
+  }
+}
+
+function codeBundleText() {
+  return state.solution.files
+    .map(
+      (file) =>
+        `${"=".repeat(80)}\nFILE: ${file.name}\n${"=".repeat(80)}\n\n${file.content}`,
+    )
+    .join("\n\n");
+}
+
+function downloadBlob(content, type, filename) {
+  const url = URL.createObjectURL(new Blob([content], { type }));
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.append(anchor);
+  anchor.click();
+  anchor.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function downloadCodeBundle() {
+  if (!state.solution) return;
+  downloadBlob(
+    codeBundleText(),
+    "text/plain;charset=utf-8",
+    `SAF-${state.solution.type}-code-bundle.txt`,
+  );
+  addActivity("Code Generation", "Downloaded complete generated code bundle", "complete");
+  renderExecution();
+}
+
+function downloadWordReport() {
+  if (!state.solution) return;
+  const requirement = el("#requirement").value.trim();
+  const fileSections = state.solution.files
+    .map(
+      (file) => `<h2>${escapeHtml(file.name)}</h2><p><strong>Language:</strong> ${escapeHtml(file.language)}</p><pre>${escapeHtml(file.content)}</pre>`,
+    )
+    .join("");
+  const documentHtml = `<!doctype html><html><head><meta charset="utf-8">
+    <title>SDLC Generated Solution</title>
+    <style>body{font-family:Arial,sans-serif;color:#102a2a;margin:40px}h1,h2{color:#0f5c59}pre{background:#f3f5f1;border:1px solid #d9ded4;padding:14px;white-space:pre-wrap;font:10pt Consolas,monospace}p{line-height:1.5}</style>
+    </head><body><h1>${escapeHtml(state.solution.title)}</h1>
+    <p><strong>Requirement:</strong> ${escapeHtml(requirement)}</p>
+    <p>${escapeHtml(state.solution.summary)}</p>${fileSections}
+    <h2>Traceability</h2><p>SAF-REQ-001 → SAF-BRD-001 → SAF-EPIC-001 → SAF-CHANGE-001 → SAF-TEST-001</p>
+    </body></html>`;
+  downloadBlob(
+    documentHtml,
+    "application/msword;charset=utf-8",
+    `SAF-${state.solution.type}-solution-report.doc`,
+  );
+  addActivity("QA Handoff", "Downloaded Word-compatible solution report", "complete");
+  renderExecution();
+}
+
+async function copySelectedFile() {
+  if (!state.solution) return;
+  const selected = state.solution.files.find(
+    (file) => file.name === state.selectedFile,
+  );
+  if (!selected) return;
+  try {
+    await navigator.clipboard.writeText(selected.content);
+    el("#copy-file").textContent = "Copied";
+    window.setTimeout(() => {
+      el("#copy-file").textContent = "Copy code";
+    }, 1200);
+  } catch {
+    setNotice("Copy was blocked by the browser. Use Download all code instead.");
+  }
+}
+
 function renderArtifactDetail() {
   const selected =
     state.artifacts.find((item) => item.id === state.selectedId) ??
@@ -340,6 +726,7 @@ function renderStatus() {
   );
   el("#reset-demo").classList.toggle("hidden", state.run !== "complete");
   el("#requirement").disabled = state.completed > 0;
+  el("#load-navbar-example").classList.toggle("hidden", state.completed > 0);
   [
     "#run-gate",
     "#complete-run",
@@ -356,6 +743,7 @@ function render() {
   renderStatus();
   renderAgents();
   renderExecution();
+  renderSolution();
   renderGate();
   renderArtifacts();
   renderAudit();
@@ -730,6 +1118,12 @@ async function completeRun() {
   }
 
   const brdId = `SAF-BRD-001-v${state.brdVersion}`;
+  const generatedSolution = buildGeneratedSolution(
+    el("#requirement").value.trim(),
+  );
+  const generatedCodeOutput = generatedSolution.files
+    .map((file) => `FILE: ${file.name}\n\n${file.content}`)
+    .join("\n\n----------------------------------------\n\n");
   state.run = "running";
   state.isRunning = true;
   addActivity(
@@ -800,37 +1194,15 @@ EXIT CRITERIA
     artifact(
       "SAF-CHANGE-001",
       "Code change",
-      "Approval gate vertical slice",
+      generatedSolution.title,
       "implemented",
       "Application Developer",
-      "Generated a bounded approval state machine, authorization guard, and tests.",
+      generatedSolution.summary,
       ["SAF-SPRINT-001", "SAF-EPIC-001"],
-      [
-        "Approval task model",
-        "Approve and reject actions",
-        "Version invalidation",
-        "Workflow progression guard",
-      ],
-      `export function decideBrd({ brd, actor, decision, reason }) {
-  if (actor.id !== brd.assignedArchitectId) {
-    throw new AuthorizationError("Assigned architect required");
-  }
-  if (decision === "rejected" && !reason?.trim()) {
-    throw new ValidationError("Rejection rationale required");
-  }
-  return {
-    brdVersion: brd.version,
-    status: decision,
-    decidedBy: actor.id,
-    decidedAt: new Date().toISOString(),
-    reason: reason ?? "Approved",
-  };
-}
-
-export function mayDecomposeBacklog(brd, approval) {
-  return approval?.status === "approved"
-    && approval.brdVersion === brd.version;
-}`,
+      generatedSolution.files.map(
+        (file) => `${file.name} - ${file.language}`,
+      ),
+      generatedCodeOutput,
     ),
     artifact(
       "SAF-GIT-001",
@@ -974,6 +1346,10 @@ Required lineage coverage: 100%`,
   ];
 
   for (let index = 0; index < downstreamArtifacts.length; index += 1) {
+    if (index === 2) {
+      state.solution = generatedSolution;
+      state.selectedFile = generatedSolution.files[0].name;
+    }
     await executeAgent(index + 3, downstreamArtifacts[index]);
   }
 
@@ -1025,11 +1401,22 @@ function resetDemo() {
     latestOutput: null,
     isRunning: false,
     startedAt: null,
+    solution: null,
+    selectedFile: "",
   };
   el("#requirement").value = DEFAULT_REQUIREMENT;
   el("#decision-comment").value = "";
   setNotice("Ready to process SAF-REQ-001 through the governed lifecycle.");
   render();
+}
+
+function loadNavbarExample() {
+  if (state.completed > 0 || state.isRunning) return;
+  el("#requirement").value = NAVBAR_EXAMPLE;
+  setNotice(
+    "Navbar requirement loaded. Run the agents to generate its code and preview.",
+  );
+  el("#requirement").focus();
 }
 
 el("#run-gate").addEventListener("click", runToGate);
@@ -1040,6 +1427,10 @@ el("#complete-run").addEventListener("click", completeRun);
 el("#continue-agents").addEventListener("click", completeRun);
 el("#reset-demo").addEventListener("click", resetDemo);
 el("#unauthorized-demo").addEventListener("click", unauthorizedDecision);
+el("#download-code").addEventListener("click", downloadCodeBundle);
+el("#download-doc").addEventListener("click", downloadWordReport);
+el("#copy-file").addEventListener("click", copySelectedFile);
+el("#load-navbar-example").addEventListener("click", loadNavbarExample);
 render();
 window.setInterval(() => {
   if (!state.startedAt) return;

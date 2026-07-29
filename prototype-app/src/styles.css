@@ -275,6 +275,18 @@ button:focus-visible, a:focus-visible, textarea:focus-visible {
   justify-content: space-between;
 }
 .primaryButton:hover { background: var(--teal-deep); }
+.exampleButton {
+  background: transparent;
+  border: 1px solid rgba(15, 92, 89, 0.3);
+  border-radius: 9px;
+  color: var(--teal);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 750;
+  min-height: 42px;
+  padding: 0 12px;
+}
+.exampleButton:hover { background: rgba(15, 92, 89, 0.06); }
 .primaryButton:disabled, .approveButton:disabled, .rejectButton:disabled {
   cursor: wait;
   opacity: 0.58;
@@ -471,6 +483,218 @@ button:focus-visible, a:focus-visible, textarea:focus-visible {
 .feedEvent small { color: #8b9995; font-family: "SFMono-Regular", Consolas, monospace; font-size: 8px; }
 @keyframes livePulse {
   50% { opacity: 0.42; transform: scale(0.82); }
+}
+
+.solutionSection {
+  background: #e8ebe2;
+  border-bottom: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+  padding: 62px max(36px, calc((100vw - 1408px) / 2));
+}
+.solutionSection .sectionHeader { align-items: center; }
+.solutionActions { display: flex; gap: 9px; }
+.downloadButton {
+  background: var(--teal);
+  border: 1px solid var(--teal);
+  border-radius: 9px;
+  color: white;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 750;
+  min-height: 40px;
+  padding: 0 13px;
+}
+.downloadButton.secondary { background: transparent; color: var(--teal); }
+.solutionGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(360px, 0.85fr) minmax(0, 1.15fr);
+}
+.solutionPreview, .codeWorkspace { overflow: hidden; }
+.solutionPanelHeading {
+  align-items: start;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+.solutionPanelHeading span {
+  color: var(--teal);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.solutionPanelHeading h3 {
+  font-family: Georgia, serif;
+  font-size: 23px;
+  font-weight: 500;
+  margin: 5px 0 0;
+}
+.solutionPanelHeading b {
+  background: #dff5e7;
+  border-radius: 999px;
+  color: #178555;
+  font-size: 8px;
+  padding: 6px 8px;
+  text-transform: uppercase;
+}
+.renderedSolution { min-height: 430px; padding: 20px; }
+.navbarDemo {
+  background: #f5f7f3;
+  border: 1px solid #d9ded4;
+  border-radius: 13px;
+  min-height: 390px;
+  overflow: hidden;
+}
+.navbarDemo nav {
+  align-items: center;
+  background: white;
+  border-bottom: 1px solid #d9ded4;
+  display: flex;
+  justify-content: space-between;
+  min-height: 65px;
+  padding: 0 20px;
+  position: relative;
+}
+.demoBrand {
+  color: var(--ink);
+  font-family: Georgia, serif;
+  font-size: 19px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.demoLinks { align-items: center; display: flex; gap: 3px; }
+.demoLinks a {
+  border-radius: 7px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 9px 10px;
+  text-decoration: none;
+}
+.demoLinks a.active, .demoLinks a:hover { background: #e4f3e9; color: var(--teal); }
+.demoMenuButton {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: none;
+  padding: 7px;
+}
+.demoMenuButton span {
+  background: var(--ink);
+  display: block;
+  height: 2px;
+  margin: 4px;
+  width: 21px;
+}
+.demoCanvas {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 325px;
+  padding: 35px;
+  text-align: center;
+}
+.demoCanvas p {
+  color: var(--teal);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.demoCanvas h4 {
+  font-family: Georgia, serif;
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin: 10px 0 17px;
+}
+.demoCanvas span { color: var(--muted); font-size: 10px; line-height: 1.5; max-width: 310px; }
+.genericDemo {
+  align-items: center;
+  background: #f5f7f3;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 390px;
+  padding: 40px;
+  text-align: center;
+}
+.genericDemo > span { color: var(--teal); font: 10px "SFMono-Regular", Consolas, monospace; }
+.genericDemo h4 { font-family: Georgia, serif; font-size: 32px; font-weight: 500; margin: 15px 0 8px; }
+.genericDemo p { color: var(--muted); font-size: 11px; line-height: 1.6; max-width: 360px; }
+.fileGrid {
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 15px;
+}
+.fileCard {
+  background: #f7f6f0;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  color: var(--ink);
+  cursor: pointer;
+  min-width: 0;
+  padding: 11px;
+  text-align: left;
+}
+.fileCard:hover, .fileCard.selected { background: #e5f3e9; border-color: rgba(15, 92, 89, 0.35); }
+.fileCard span {
+  color: var(--teal);
+  display: block;
+  font-size: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.fileCard strong { display: block; font-size: 11px; margin: 5px 0 4px; }
+.fileCard small {
+  color: var(--muted);
+  display: block;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 7px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.codeViewer { background: #102a2a; min-height: 330px; }
+.codeViewerTop {
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 15px;
+}
+.codeViewerTop span {
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 9px;
+}
+.codeViewerTop button {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  color: var(--mint);
+  cursor: pointer;
+  font-size: 8px;
+  padding: 6px 8px;
+}
+#generated-code {
+  color: #daf6e6;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 9px;
+  line-height: 1.6;
+  margin: 0;
+  max-height: 350px;
+  overflow: auto;
+  padding: 16px;
+  white-space: pre-wrap;
 }
 
 .pipelineSection, .evidenceSection {
@@ -780,7 +1004,7 @@ footer strong { font-size: 12px; }
 footer small, footer > p { color: rgba(255, 255, 255, 0.58); font-size: 9px; margin: 4px 0 0; }
 
 @media (max-width: 980px) {
-  .hero, .workspace, .executionGrid, .approvalSection, .evidenceGrid { grid-template-columns: 1fr; }
+  .hero, .workspace, .executionGrid, .solutionGrid, .approvalSection, .evidenceGrid { grid-template-columns: 1fr; }
   .metricGrid { grid-template-columns: repeat(2, 1fr); }
   .hero { align-items: start; }
   .heroStatus { min-width: 0; }
@@ -797,6 +1021,23 @@ footer small, footer > p { color: rgba(255, 255, 255, 0.58); font-size: 9px; mar
   .metricGrid { grid-template-columns: 1fr 1fr; }
   .metricCard { min-height: 125px; padding: 17px; }
   .actionRow { align-items: stretch; flex-direction: column; }
+  .solutionSection { padding-left: 18px; padding-right: 18px; }
+  .solutionSection .sectionHeader { align-items: stretch; flex-direction: column; }
+  .solutionActions { display: grid; grid-template-columns: 1fr 1fr; margin-top: 15px; }
+  .fileGrid { grid-template-columns: 1fr; }
+  .demoLinks {
+    background: white;
+    border-bottom: 1px solid var(--line);
+    display: none;
+    left: 0;
+    padding: 10px 18px 16px;
+    position: absolute;
+    right: 0;
+    top: 65px;
+    z-index: 2;
+  }
+  .demoLinks.open { display: grid; }
+  .demoMenuButton { display: block; }
   .primaryButton { justify-content: space-between; }
   .pipelineSection, .evidenceSection { padding-left: 18px; padding-right: 18px; }
   .approvalSection { gap: 25px; }

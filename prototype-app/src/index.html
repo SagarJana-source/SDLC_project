@@ -73,6 +73,7 @@
             <button class="primaryButton" id="run-gate">Run agents to approval gate <span>→</span></button>
             <button class="primaryButton hidden" id="complete-run">Run remaining agents <span>→</span></button>
             <button class="primaryButton hidden" id="reset-demo">Reset demonstration <span>↻</span></button>
+            <button class="exampleButton" id="load-navbar-example" type="button">Use navbar example</button>
             <p class="runNotice" id="run-notice" role="status">Ready to process SAF-REQ-001 through the governed lifecycle.</p>
           </div>
         </article>
@@ -111,6 +112,32 @@
             <div class="feedHeading"><div><p class="sectionLabel">Event stream</p><h3>Agent activity</h3></div><span id="activity-count">1</span></div>
             <div class="feedList" id="activity-feed" aria-live="polite"></div>
           </aside>
+        </div>
+      </section>
+
+      <section class="solutionSection hidden" id="solution-section">
+        <div class="sectionHeader">
+          <div><p class="sectionLabel">Generated solution</p><h2>Code, preview, and downloadable report</h2></div>
+          <div class="solutionActions">
+            <button class="downloadButton" id="download-code" type="button">Download all code</button>
+            <button class="downloadButton secondary" id="download-doc" type="button">Download Word report</button>
+          </div>
+        </div>
+        <div class="solutionGrid">
+          <article class="solutionPreview panel">
+            <div class="solutionPanelHeading">
+              <div><span>Rendered result</span><h3 id="solution-title">Generated application component</h3></div>
+              <b>Interactive preview</b>
+            </div>
+            <div class="renderedSolution" id="rendered-solution"></div>
+          </article>
+          <article class="codeWorkspace panel">
+            <div class="fileGrid" id="file-grid"></div>
+            <div class="codeViewer">
+              <div class="codeViewerTop"><span id="selected-file-name">Generated file</span><button id="copy-file" type="button">Copy code</button></div>
+              <pre id="generated-code"></pre>
+            </div>
+          </article>
         </div>
       </section>
 

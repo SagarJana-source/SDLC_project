@@ -18,7 +18,8 @@ test("build emits a Cloudflare-compatible worker and social asset", async () => 
 
 test("source defines eleven agents and governed lifecycle actions", async () => {
   const source = await readFile(new URL("src/app.js", root), "utf8");
-  assert.equal((source.match(/name: "/g) ?? []).length, 11);
+  const agentRegistry = source.match(/const AGENTS = \[([\s\S]*?)\];/)?.[1] ?? "";
+  assert.equal((agentRegistry.match(/name: "/g) ?? []).length, 11);
   assert.match(source, /function unauthorizedDecision/);
   assert.match(source, /function rejectBrd/);
   assert.match(source, /function reviseBrd/);
@@ -28,6 +29,9 @@ test("source defines eleven agents and governed lifecycle actions", async () => 
   assert.match(source, /Produced work/);
   assert.match(source, /ACCEPTANCE SANITY REPORT/);
   assert.match(source, /KNOWLEDGE GRAPH UPDATE/);
+  assert.match(source, /function buildNavbarSolution/);
+  assert.match(source, /function downloadWordReport/);
+  assert.match(source, /Navbar\.test\.jsx/);
   assert.match(source, /Lineage coverage: 100%/);
   assert.match(source, /escapeHtml/);
 });
@@ -40,6 +44,8 @@ test("HTML presents control, evidence, and metadata surfaces", async () => {
   assert.match(html, /Eleven-agent delivery line/);
   assert.match(html, /See the agents do the work/);
   assert.match(html, /Artifact and work-output explorer/);
+  assert.match(html, /Code, preview, and downloadable report/);
+  assert.match(html, /Download Word report/);
   assert.match(html, /Production writes disabled/);
   assert.match(html, /__ORIGIN__\/og\.png/);
 });
