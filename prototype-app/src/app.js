@@ -560,6 +560,34 @@ function downloadCodeBundle() {
   renderExecution();
 }
 
+function downloadSelectedFile() {
+  if (!state.solution) return;
+  const selected = state.solution.files.find(
+    (file) => file.name === state.selectedFile,
+  );
+  if (!selected) return;
+  const extension = selected.name.split(".").at(-1)?.toLowerCase();
+  const contentTypes = {
+    css: "text/css;charset=utf-8",
+    js: "text/javascript;charset=utf-8",
+    jsx: "text/javascript;charset=utf-8",
+    md: "text/markdown;charset=utf-8",
+    json: "application/json;charset=utf-8",
+    html: "text/html;charset=utf-8",
+  };
+  downloadBlob(
+    selected.content,
+    contentTypes[extension] ?? "text/plain;charset=utf-8",
+    selected.name.split("/").at(-1),
+  );
+  addActivity(
+    "Code Generation",
+    `Downloaded output file ${selected.name}`,
+    "complete",
+  );
+  renderExecution();
+}
+
 function downloadWordReport() {
   if (!state.solution) return;
   const requirement = el("#requirement").value.trim();
@@ -1429,6 +1457,7 @@ el("#reset-demo").addEventListener("click", resetDemo);
 el("#unauthorized-demo").addEventListener("click", unauthorizedDecision);
 el("#download-code").addEventListener("click", downloadCodeBundle);
 el("#download-doc").addEventListener("click", downloadWordReport);
+el("#download-file").addEventListener("click", downloadSelectedFile);
 el("#copy-file").addEventListener("click", copySelectedFile);
 el("#load-navbar-example").addEventListener("click", loadNavbarExample);
 render();

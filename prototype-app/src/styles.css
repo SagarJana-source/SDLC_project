@@ -676,6 +676,7 @@ button:focus-visible, a:focus-visible, textarea:focus-visible {
   font-family: "SFMono-Regular", Consolas, monospace;
   font-size: 9px;
 }
+.codeViewerTop > div { display: flex; gap: 7px; }
 .codeViewerTop button {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);

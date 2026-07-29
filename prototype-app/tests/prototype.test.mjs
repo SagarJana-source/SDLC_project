@@ -31,6 +31,7 @@ test("source defines eleven agents and governed lifecycle actions", async () => 
   assert.match(source, /KNOWLEDGE GRAPH UPDATE/);
   assert.match(source, /function buildNavbarSolution/);
   assert.match(source, /function downloadWordReport/);
+  assert.match(source, /function downloadSelectedFile/);
   assert.match(source, /Navbar\.test\.jsx/);
   assert.match(source, /Lineage coverage: 100%/);
   assert.match(source, /escapeHtml/);
@@ -46,6 +47,7 @@ test("HTML presents control, evidence, and metadata surfaces", async () => {
   assert.match(html, /Artifact and work-output explorer/);
   assert.match(html, /Code, preview, and downloadable report/);
   assert.match(html, /Download Word report/);
+  assert.match(html, /Download file/);
   assert.match(html, /Production writes disabled/);
   assert.match(html, /__ORIGIN__\/og\.png/);
 });
