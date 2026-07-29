@@ -24,6 +24,10 @@ test("source defines eleven agents and governed lifecycle actions", async () => 
   assert.match(source, /function reviseBrd/);
   assert.match(source, /function approveBrd/);
   assert.match(source, /function completeRun/);
+  assert.match(source, /async function executeAgent/);
+  assert.match(source, /Produced work/);
+  assert.match(source, /ACCEPTANCE SANITY REPORT/);
+  assert.match(source, /KNOWLEDGE GRAPH UPDATE/);
   assert.match(source, /Lineage coverage: 100%/);
   assert.match(source, /escapeHtml/);
 });
@@ -34,7 +38,8 @@ test("HTML presents control, evidence, and metadata surfaces", async () => {
   assert.match(html, /Trace every decision/);
   assert.match(html, /Human-governed delivery orchestration/);
   assert.match(html, /Eleven-agent delivery line/);
-  assert.match(html, /Artifact and lineage explorer/);
+  assert.match(html, /See the agents do the work/);
+  assert.match(html, /Artifact and work-output explorer/);
   assert.match(html, /Production writes disabled/);
   assert.match(html, /__ORIGIN__\/og\.png/);
 });

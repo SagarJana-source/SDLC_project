@@ -275,6 +275,10 @@ button:focus-visible, a:focus-visible, textarea:focus-visible {
   justify-content: space-between;
 }
 .primaryButton:hover { background: var(--teal-deep); }
+.primaryButton:disabled, .approveButton:disabled, .rejectButton:disabled {
+  cursor: wait;
+  opacity: 0.58;
+}
 .primaryButton span { color: var(--lime); font-size: 19px; }
 .runNotice { color: var(--muted); font-size: 12px; line-height: 1.45; margin: 0; }
 .guardrailPanel { background: #112e2c; color: white; padding: 28px; }
@@ -307,6 +311,168 @@ button:focus-visible, a:focus-visible, textarea:focus-visible {
   width: 22px;
 }
 
+.executionSection {
+  margin: 0 auto;
+  max-width: 1480px;
+  padding: 4px 36px 62px;
+}
+.executionGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1.55fr) minmax(310px, 0.65fr);
+}
+.workMonitor, .executionFeed { overflow: hidden; }
+.monitorTop {
+  align-items: center;
+  background: #102a2a;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 18px;
+}
+.liveLabel { align-items: center; display: flex; font-size: 11px; font-weight: 750; gap: 9px; }
+.liveLabel i {
+  background: #788b87;
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+}
+.liveLabel i.working {
+  animation: livePulse 1.25s infinite;
+  background: var(--lime);
+  box-shadow: 0 0 0 5px rgba(215, 255, 117, 0.13);
+}
+.liveLabel i.waiting { background: var(--amber); }
+.liveLabel i.complete { background: var(--mint); }
+.elapsed {
+  color: var(--mint);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 11px;
+}
+.activeAgent {
+  align-items: start;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  gap: 17px;
+  grid-template-columns: auto 1fr;
+  padding: 22px;
+}
+.activeAgentId {
+  background: var(--teal);
+  border-radius: 9px;
+  color: white;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 10px;
+}
+.activeAgent small {
+  color: var(--muted);
+  display: block;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.activeAgent h3 { font-family: Georgia, serif; font-size: 24px; font-weight: 500; margin: 4px 0 6px; }
+.activeAgent p { color: var(--muted); font-size: 11px; line-height: 1.5; margin: 0; }
+.workPreview { background: #f7f5ee; min-height: 302px; padding: 22px; }
+.previewEmpty {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 255px;
+  text-align: center;
+}
+.previewEmpty span {
+  color: var(--teal);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 28px;
+  font-weight: 800;
+}
+.previewEmpty p { font-size: 11px; line-height: 1.5; max-width: 390px; }
+.previewTop { align-items: center; display: flex; justify-content: space-between; }
+.previewTop span {
+  color: var(--teal);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.previewTop b {
+  background: #dff5e7;
+  border-radius: 999px;
+  color: #178555;
+  font-size: 8px;
+  padding: 5px 8px;
+  text-transform: uppercase;
+}
+.workPreview h4 { font-family: Georgia, serif; font-size: 22px; font-weight: 500; margin: 12px 0; }
+.workPreview pre, .producedOutput pre {
+  background: #102a2a;
+  border-radius: 10px;
+  color: #d9f7e5;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 10px;
+  line-height: 1.6;
+  margin: 0;
+  max-height: 235px;
+  overflow: auto;
+  padding: 15px;
+  white-space: pre-wrap;
+}
+.inspectOutput {
+  background: transparent;
+  border: 0;
+  color: var(--teal);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 750;
+  margin-top: 12px;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.executionFeed { max-height: 520px; padding: 21px; }
+.feedHeading { align-items: center; display: flex; justify-content: space-between; }
+.feedHeading h3 { font-family: Georgia, serif; font-size: 21px; font-weight: 500; margin: 0; }
+.feedHeading > span {
+  align-items: center;
+  background: #edf1eb;
+  border-radius: 50%;
+  display: flex;
+  font-size: 10px;
+  height: 28px;
+  justify-content: center;
+  width: 28px;
+}
+.feedList { margin-top: 20px; max-height: 405px; overflow: auto; padding-right: 5px; }
+.feedEvent {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: auto 1fr;
+  padding-bottom: 17px;
+}
+.feedEvent i {
+  background: #879691;
+  border-radius: 50%;
+  height: 8px;
+  margin-top: 4px;
+  width: 8px;
+}
+.feedEvent.working i { animation: livePulse 1.25s infinite; background: var(--amber); }
+.feedEvent.complete i { background: #24a66b; }
+.feedEvent.decision i { background: var(--teal); }
+.feedEvent.waiting i { background: var(--amber); }
+.feedEvent strong { display: block; font-size: 10px; }
+.feedEvent p { color: var(--muted); font-size: 10px; line-height: 1.45; margin: 3px 0; }
+.feedEvent small { color: #8b9995; font-family: "SFMono-Regular", Consolas, monospace; font-size: 8px; }
+@keyframes livePulse {
+  50% { opacity: 0.42; transform: scale(0.82); }
+}
+
 .pipelineSection, .evidenceSection {
   background: #e8ebe2;
   border-bottom: 1px solid var(--line);
@@ -337,11 +503,18 @@ button:focus-visible, a:focus-visible, textarea:focus-visible {
   padding: 14px;
 }
 .agentCard.complete { background: var(--surface); border-color: rgba(15, 92, 89, 0.35); }
+.agentCard.running {
+  background: #f4ffe1;
+  border-color: rgba(123, 163, 25, 0.65);
+  box-shadow: 0 10px 30px rgba(80, 112, 15, 0.12);
+  transform: translateY(-3px);
+}
 .agentCard.blocked { background: #fff7e5; border-color: rgba(244, 185, 66, 0.65); }
 .agentTop { align-items: center; display: flex; justify-content: space-between; margin-bottom: 25px; }
 .agentTop span { color: var(--muted); font-family: "SFMono-Regular", Consolas, monospace; font-size: 9px; }
 .agentTop i { background: #bdc5be; border-radius: 50%; height: 8px; width: 8px; }
 .complete .agentTop i { background: #26a56a; box-shadow: 0 0 0 4px rgba(38, 165, 106, 0.12); }
+.running .agentTop i { animation: livePulse 1.25s infinite; background: #88b522; box-shadow: 0 0 0 4px rgba(136, 181, 34, 0.15); }
 .blocked .agentTop i { background: var(--amber); box-shadow: 0 0 0 4px rgba(244, 185, 66, 0.16); }
 .agentCard strong { display: block; font-size: 12px; line-height: 1.35; min-height: 34px; }
 .agentCard small { color: var(--muted); display: block; font-size: 9px; line-height: 1.3; margin-top: 7px; }
@@ -355,6 +528,7 @@ button:focus-visible, a:focus-visible, textarea:focus-visible {
   text-transform: uppercase;
 }
 .complete .agentStatus { color: #178555; }
+.running .agentStatus { color: #6c8e18; }
 .blocked .agentStatus { color: #a76900; }
 
 .approvalSection {
@@ -511,6 +685,17 @@ button:focus-visible, a:focus-visible, textarea:focus-visible {
   padding: 10px;
 }
 .detailChecklist span { color: #178555; }
+.producedOutput { margin: 24px 0; }
+.producedOutput > div { align-items: center; display: flex; justify-content: space-between; margin-bottom: 9px; }
+.producedOutput > div span {
+  color: var(--teal);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.producedOutput > div b { color: var(--muted); font-size: 9px; font-weight: 650; }
+.producedOutput pre { max-height: 360px; }
 .emptyState, .emptyDetail {
   align-items: center;
   color: var(--muted);
@@ -595,7 +780,7 @@ footer strong { font-size: 12px; }
 footer small, footer > p { color: rgba(255, 255, 255, 0.58); font-size: 9px; margin: 4px 0 0; }
 
 @media (max-width: 980px) {
-  .hero, .workspace, .approvalSection, .evidenceGrid { grid-template-columns: 1fr; }
+  .hero, .workspace, .executionGrid, .approvalSection, .evidenceGrid { grid-template-columns: 1fr; }
   .metricGrid { grid-template-columns: repeat(2, 1fr); }
   .hero { align-items: start; }
   .heroStatus { min-width: 0; }
@@ -604,7 +789,7 @@ footer small, footer > p { color: rgba(255, 255, 255, 0.58); font-size: 9px; mar
 }
 
 @media (max-width: 640px) {
-  .topbar, .hero, .metricGrid, .workspace, .approvalSection { padding-left: 18px; padding-right: 18px; }
+  .topbar, .hero, .metricGrid, .workspace, .executionSection, .approvalSection { padding-left: 18px; padding-right: 18px; }
   .topbarMeta .simulationTag { display: none; }
   .githubLink { font-size: 11px; }
   .hero { gap: 35px; padding-top: 54px; }
