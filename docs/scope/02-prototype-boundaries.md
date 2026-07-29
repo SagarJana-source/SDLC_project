@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft for stakeholder approval.
+Approved for prototype planning. Approval is recorded in `docs/decisions/DEC-0002-step-2-boundaries-approval.md`.
 
 - Related scenario: `SAF-SCENARIO-001`
 - Related requirement: `SAF-REQ-001`
@@ -252,4 +252,4 @@ Step 2 is complete when the stakeholder confirms:
 
 ## Approval checkpoint
 
-Approve `SAF-SCOPE-001` as written or request changes. Step 3 must not start until `SAF-GATE-002` is approved.
+Approved by the project stakeholder through the project task. Material boundary changes require a new decision.

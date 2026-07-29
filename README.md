@@ -10,13 +10,15 @@ The prototype is intended to prove that a raw business requirement can produce s
 |---|---|
 | Project structure | Ready |
 | Step 1: Prototype scenario | Approved |
-| Step 2: Prototype boundaries | Awaiting stakeholder approval |
-| Step 3 and later | Blocked by the Step 2 approval gate |
+| Step 2: Prototype boundaries | Approved |
+| Step 3: Users and responsibilities | Awaiting stakeholder approval |
+| Step 4 and later | Blocked by the Step 3 approval gate |
 | Framework implementation | Not started |
 | GitHub remote | Not configured |
 
 The current scenario is documented in [docs/scenarios/01-brd-approval.md](docs/scenarios/01-brd-approval.md).
-The proposed prototype boundaries are documented in [docs/scope/02-prototype-boundaries.md](docs/scope/02-prototype-boundaries.md).
+The approved prototype boundaries are documented in [docs/scope/02-prototype-boundaries.md](docs/scope/02-prototype-boundaries.md).
+The proposed users and responsibilities are documented in [docs/roles/03-users-and-responsibilities.md](docs/roles/03-users-and-responsibilities.md).
 
 ## Prototype scenario
 
@@ -34,6 +36,7 @@ It demonstrates human-in-the-loop control, BRD version integrity, downstream wor
 |-- agents/                  Reserved for future agent definitions
 |-- docs/
 |   |-- decisions/           Architecture decision records
+|   |-- roles/               Users, ownership, and responsibilities
 |   |-- scenarios/           Approved prototype scenarios
 |   `-- templates/           Controlled artifact templates
 |-- integrations/            Reserved for external-system adapters
@@ -51,9 +54,9 @@ Reserved folders do not contain implementation or later-stage design. They estab
 
 ## Working with the project
 
-1. Review the proposed prototype boundaries.
+1. Review the proposed users and responsibilities.
 2. Record approval or requested changes in a GitHub issue.
-3. Do not start Step 3 until the Step 2 approval issue is closed as approved.
+3. Do not start Step 4 until the Step 3 approval issue is closed as approved.
 4. Create one branch per approved work item.
 5. Link every pull request to its issue and requirement identifier.
 6. Require review before merging to `main`.
@@ -81,4 +84,4 @@ These identifiers should appear in related issues, branches, commits, pull reque
 
 ## Next authorized action
 
-Obtain stakeholder approval or requested changes for `SAF-SCOPE-001`. Step 3 must not begin before that decision is recorded.
+Obtain stakeholder approval or requested changes for `SAF-ROLES-001`. Step 4 must not begin before that decision is recorded.

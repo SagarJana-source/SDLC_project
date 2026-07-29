@@ -3,6 +3,7 @@
 *                       @your-org/project-maintainers
 /docs/scenarios/        @your-org/business-analysts @your-org/architects
 /docs/decisions/        @your-org/architects
+/docs/roles/            @your-org/project-maintainers @your-org/architects
 /agents/                @your-org/ai-engineers @your-org/architects
 /orchestration/         @your-org/architects @your-org/ai-engineers
 /schemas/               @your-org/architects @your-org/data-engineers

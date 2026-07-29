@@ -18,8 +18,8 @@ Create a controlled prototype that demonstrates end-to-end SDLC artifact generat
 | Step | Outcome | Status | Entry condition |
 |---|---|---|---|
 | 1 | Define the prototype scenario | Approved | Project initiated |
-| 2 | Establish prototype boundaries | Awaiting approval | Step 1 approved |
-| 3 | Identify users and responsibilities | Blocked | Step 2 approved |
+| 2 | Establish prototype boundaries | Approved | Step 1 approved |
+| 3 | Identify users and responsibilities | Awaiting approval | Step 2 approved |
 | 4 | Document the target workflow | Blocked | Step 3 approved |
 | 5 | Define the 11 agent contracts | Blocked | Step 4 approved |
 | 6 | Design the shared artifact model | Blocked | Step 5 approved |
@@ -70,6 +70,8 @@ Each approval must record:
 
 `SAF-GATE-001` approved `SAF-SCENARIO-001`.
 
-`SAF-GATE-002` is awaiting approval of `SAF-SCOPE-001`.
+`SAF-GATE-002` approved `SAF-SCOPE-001`.
 
-Step 3 must remain blocked until that approval is recorded.
+`SAF-GATE-003` is awaiting approval of `SAF-ROLES-001`.
+
+Step 4 must remain blocked until that approval is recorded.
